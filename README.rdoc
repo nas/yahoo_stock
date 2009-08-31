@@ -7,7 +7,7 @@
 Provides an interface to yahoo finance to get stock related data, i.e. latest trade related data, volume, 50 day moving average, market cap, etc.
 
 You must know the stock symbol. For instance, YHOO for yahoo, GOOG for google, etc. 
-The kind of parameters can be passed can be found out after initializing the YahooStock::Quote object and passing valid_parameters message.
+The kind of parameters can be passed can be found after initializing the YahooStock::Quote object and passing valid_parameters message.
 
 == SYNOPSIS:
 
