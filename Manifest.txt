@@ -1,13 +1,9 @@
 History.txt
 Manifest.txt
-PostInstall.txt
 README.rdoc
 Rakefile
 lib/yahoo_stock.rb
-lib/yahoo/quote.rb
-lib/yahoo/interface.rb
-script/console
-script/destroy
-script/generate
-test/test_helper.rb
-test/test_yahoo_stock.rb
+lib/yahoo_stock/quote.rb
+lib/yahoo_stock/interface.rb
+spec/spec_helper.rb
+spec/yahoo_stock/quote_spec.rb

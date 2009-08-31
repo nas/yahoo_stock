@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-Provides an interface to yahoo finance to get stock related data, i.e. latest trade related data, volume, 50 day moving average, market cap, etc.
+Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc.
 
 You must know the stock symbol. For instance, YHOO for yahoo, GOOG for google, etc. 
 The kind of parameters can be passed can be found after initializing the YahooStock::Quote object and passing valid_parameters message.
@@ -35,13 +35,21 @@ quote.get_data
 
 == INSTALL:
 
+gem sources -a http://gems.github.com
+
 sudo gem install yahoo_stock
+
+== TESTS:
+
+Tests are written using Rspec 1.2.2
+
+To run all tests 'rake spec' from the root directory
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 Nasir
+Copyright (c) 2009 Nasir Jamal
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
