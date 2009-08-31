@@ -4,13 +4,16 @@
 
 == DESCRIPTION:
 
-Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc.
+Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc, virtually that yahoo finance provides.
 
 You must know the stock symbol. For instance, YHOO for yahoo, GOOG for google, etc. 
 The kind of parameters can be passed can be found after initializing the 
-YahooStock::Quote object and passing valid_parameters message.
+YahooStock::Quote object and passing valid_parameters message, example is given below in the USAGE section.
 
-== SYNOPSIS:
+== USAGE:
+
+require 'rubygems'
+require 'yahoo_stock'
 
 * Initialize quote object
 
