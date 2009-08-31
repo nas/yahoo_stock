@@ -45,7 +45,7 @@ quote.get_data
 
 gem sources -a http://gems.github.com
 
-sudo gem install yahoo_stock
+sudo gem install nas-yahoo_stock
 
 == TESTS:
 
