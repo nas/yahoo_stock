@@ -7,29 +7,37 @@
 Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc.
 
 You must know the stock symbol. For instance, YHOO for yahoo, GOOG for google, etc. 
-The kind of parameters can be passed can be found after initializing the YahooStock::Quote object and passing valid_parameters message.
+The kind of parameters can be passed can be found after initializing the 
+YahooStock::Quote object and passing valid_parameters message.
 
 == SYNOPSIS:
 
-Initialize quote object
+* Initialize quote object
+
 quote = YahooStock::Quote.new(:stock_symbols => ['YHOO', 'GOOG'])
 
-View the valid parameters that can be passed
+* To view the valid parameters that can be passed
+
 quote.valid_parameters
 
-View the current parameters used
+* To view the current parameters used
+
 quote.current_parameters
 
-View the current stock symbols used
+* To view the current stock symbols used
+
 quote.current_symbols
 
-Add more stocks to the list
+* To add more stocks to the list
+
 quote.add_symbols('MSFT', 'AAPL')
 
-Remove stocks from list
+* To remove stocks from list
+
 quote.remove_symbols('MSFT', 'AAPL')
 
-Get data for all stocks
+* To get data for all stocks
+
 quote.get_data
 
 
