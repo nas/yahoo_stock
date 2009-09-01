@@ -65,11 +65,11 @@ module YahooStock
         @quote = YahooStock::Quote.new(:stock_symbols => 'MSFT')
       end
   
-      describe "get_data" do
+      describe "get" do
       
         it "should get the results from the interface" do
           @interface.should_receive(:results)
-          @quote.get_data
+          @quote.get
         end
       end
       

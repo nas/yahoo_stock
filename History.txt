@@ -2,3 +2,8 @@
 
 * 1 major enhancement:
   * Initial release
+
+=== 0.1.2 2009-09-01
+
+* 1 minor change:
+  * changed method name YahooStock::Quote#get_data to get

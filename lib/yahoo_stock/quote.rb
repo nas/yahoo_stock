@@ -23,7 +23,7 @@ module YahooStock
       @interface = YahooStock::Interface.new(options)
     end
     
-    def get_data
+    def get
       @interface.results
     end
     

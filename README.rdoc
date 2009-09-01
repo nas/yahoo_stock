@@ -42,7 +42,7 @@ quote.remove_symbols('MSFT', 'AAPL')
 
 * To get data for all stocks
 
-quote.get_data
+quote.get
 
 
 == INSTALL:
