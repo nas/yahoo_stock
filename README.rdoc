@@ -13,6 +13,7 @@ YahooStock::Quote object and passing valid_parameters message, example is given 
 == USAGE:
 
 require 'rubygems'
+
 require 'yahoo_stock'
 
 * Initialize quote object

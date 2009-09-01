@@ -120,6 +120,10 @@ module YahooStock
     
     def full_url
       all_stock_symbols = stock_symbols.join('+')
+      params = yahoo_url_parameters-allowed_parameters
+      unless params.length.zero?
+        raise InterfaceError, "The parameters '#{params.join(', ')}' are not valid. Please check using YahooStock::Interface#allowed_parameters or YahooStock::Quote#valid_parameters" 
+      end
       parameter_values  = yahoo_url_parameters.collect {|v| parameters[v]}.join('')
       if !all_stock_symbols.any?  
         raise InterfaceError, "You must add atleast one stock symbol to get stock data" 
