@@ -7,3 +7,12 @@
 
 * 1 minor change:
   * changed method name YahooStock::Quote#get_data to get
+
+=== 0.1.3 2009-09-05
+
+* 1 addition:
+  * adds a new class called YahooStock::ScripSymbol that allows to 
+    find out the stock symbol for a company
+  * adds specs for previous and new code
+  * adds rdocs
+  
