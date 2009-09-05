@@ -5,5 +5,7 @@ Rakefile
 lib/yahoo_stock.rb
 lib/yahoo_stock/quote.rb
 lib/yahoo_stock/interface.rb
+lib/yahoo_stock/scrip_symbol.rb
 spec/spec_helper.rb
 spec/yahoo_stock/quote_spec.rb
+spec/yahoo_stock/scrip_symbol_spec.rb
