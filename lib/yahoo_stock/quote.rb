@@ -1,3 +1,41 @@
+=begin
+
+== DESCRIPTION:
+
+Provides the stock related current data.
+
+== USAGE:
+
+* Initialize quote object
+
+quote = YahooStock::Quote.new(:stock_symbols => ['YHOO', 'GOOG'])
+
+* To view the valid parameters that can be passed
+
+quote.valid_parameters
+
+* To view the current parameters used
+
+quote.current_parameters
+
+* To view the current stock symbols used
+
+quote.current_symbols
+
+* To add more stocks to the list
+
+quote.add_symbols('MSFT', 'AAPL')
+
+* To remove stocks from list
+
+quote.remove_symbols('MSFT', 'AAPL')
+
+* To get data for all stocks
+
+quote.get
+
+=end
+
 module YahooStock
   class Quote
     
