@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc, virtually that yahoo finance provides.
+Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc, virtually any thing that yahoo finance provides.
 
 If you don't know the stock / scrip symbol of the company then you can find that out by using the YahooStock::ScripSymbol class. The methods are mentioned in the Usage section below. For instance, YHOO for yahoo, GOOG for google, etc. 
 The kind of parameters can be passed can be found after initializing the 
