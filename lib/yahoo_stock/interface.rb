@@ -134,10 +134,10 @@ module YahooStock
         raise InterfaceError, "The parameters '#{params.join(', ')}' are not valid. Please check using YahooStock::Interface#allowed_parameters or YahooStock::Quote#valid_parameters" 
       end
       parameter_values  = yahoo_url_parameters.collect {|v| parameters[v]}.join('')
-      if !all_stock_symbols.any?  
+      if all_stock_symbols.empty?
         raise InterfaceError, "You must add atleast one stock symbol to get stock data" 
       end
-      if !parameter_values.any?
+      if parameter_values.empty?
         raise InterfaceError, "You must add atleast one parameter to get stock data" 
       end
       "#{@base_url}?s=#{all_stock_symbols}&f=#{parameter_values}"

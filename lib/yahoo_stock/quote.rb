@@ -54,7 +54,7 @@ module YahooStock
       if options.nil? || !options[:stock_symbols]
         raise QuoteException, "You must provide a hash of stock symbols to fetch data"
       end
-      unless options[:stock_symbols].any?
+      if options[:stock_symbols].nil? || options[:stock_symbols].empty?
         raise QuoteException, "You must provide atleast one stock symbol to fetch data"
       end
       if !(options[:read_parameters] && options[:read_parameters].any?)
