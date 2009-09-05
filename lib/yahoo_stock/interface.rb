@@ -1,20 +1,19 @@
 =begin
 
+Parameter source:
 http://www.gummy-stuff.org/Yahoo-data.htm
 http://finance.yahoo.com/d/quotes.csv?s=XOM+BBDb.TO+JNJ+MSFT&f=snd1l1yr
 
 =end
 
-=begin
-
-Class to generate the right url and interface with yahoo
-
-=end
-
 require 'net/http'
 module YahooStock
+   # ==DESCRIPTION:
+   # 
+   # Class to generate the right url and interface with yahoo
+   #
   class Interface
-    
+
     class InterfaceError < RuntimeError ; end
       
     PARAMETERS = {
@@ -103,6 +102,15 @@ module YahooStock
     
     attr_accessor :stock_symbols, :yahoo_url_parameters
     
+    # The stock_params_hash parameter expects a hash with two key value pairs
+    # 
+    # :stock_symbols => 'Array of stock symbols'
+    # 
+    # e.g. :stock_symbols => ['YHOO']
+    # 
+    # another hash :read_parameters => 'array of values'
+    # 
+    # e.g. :read_parameters => [:last_trade_price_only, :last_trade_date]
     def initialize(stock_params_hash)
       unless stock_params_hash
         raise InterfaceError, 'You must pass a hash of stock symbols and the data you would like to see' 
@@ -118,6 +126,7 @@ module YahooStock
       @base_url      = "http://download.finance.yahoo.com/d/quotes.csv"
     end
     
+    # Generate full url to be sent to yahoo
     def full_url
       all_stock_symbols = stock_symbols.join('+')
       params = yahoo_url_parameters-allowed_parameters
@@ -134,10 +143,15 @@ module YahooStock
       "#{@base_url}?s=#{all_stock_symbols}&f=#{parameter_values}"
     end
     
+    # Get the csv file and create an array of different stock symbols and values returned 
+    # for the parameters passed based on line break.
     def get_values
       Net::HTTP.get(URI.parse(full_url)).gsub(/\"/,'').split(/\r\n/)
     end
     
+    # Returns results for the stock symbols as a hash.
+    # The hash keys are the stock symbols and the values are a hash of the keys and 
+    # values asked for that stock.
     def results
       stock = {}
       get_values.each_with_index do |values, index|
@@ -150,6 +164,7 @@ module YahooStock
       stock
     end
     
+    # Add stock symbols to the url.
     def add_symbols(*symbols)
       symbols.each do |symbol|
         unless stock_symbols.include?(symbol)
@@ -158,6 +173,7 @@ module YahooStock
       end
     end
     
+    # Remove stock symbols from the url.
     def remove_symbols(*symbols)
       symbols.each do |symbol|
         unless stock_symbols.include?(symbol)
@@ -167,6 +183,7 @@ module YahooStock
       end
     end
     
+    # Add parameters to the url.
     def add_parameters(*parameters)
       parameters.each do |parameter|
         unless allowed_parameters.include?(parameter)
@@ -178,6 +195,7 @@ module YahooStock
       end
     end
     
+    # Remove parameters from the url.
     def remove_parameters(*parameters)
       parameters.each do |parameter|
         unless yahoo_url_parameters.include?(parameter)
@@ -187,6 +205,7 @@ module YahooStock
       end
     end
     
+    # Returns an array of parameters that can be passed to yahoo.
     def allowed_parameters
       parameters.keys
     end
