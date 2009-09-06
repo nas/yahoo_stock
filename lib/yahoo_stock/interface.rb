@@ -218,10 +218,25 @@ module YahooStock
       parameters.keys
     end
     
+    # Add standard parameters
+    def add_standard_params
+      STD_PARAMETERS.keys.each { |parameter| add_parameters(parameter) }
+    end
+    
+    # Add extended parameters
+    def add_extended_params
+      EXTENDED_PARAMETERS.keys.each { |parameter| add_parameters(parameter) }
+    end
+    
+    # Add realtime parameters
+    def add_realtime_params
+      REALTIME_PARAMETERS.keys.each { |parameter| add_parameters(parameter) }
+    end
+    
     private
     
     def parameters
-      PARAMETERS
+      STD_PARAMETERS.merge!(EXTENDED_PARAMETERS).merge!(REALTIME_PARAMETERS)
     end
     
   end

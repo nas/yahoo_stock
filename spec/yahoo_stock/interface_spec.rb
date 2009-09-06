@@ -213,4 +213,55 @@ describe YahooStock::Interface do
     
   end
   
+  describe "add_standard_params" do
+    
+    it "should get the keys for standard parameters" do
+      YahooStock::Interface::STD_PARAMETERS.should_receive(:keys).and_return([])
+      @interface.add_standard_params
+    end
+    
+    it "should add each parameter" do
+      keys = [:a_key, :b_key]
+      YahooStock::Interface::STD_PARAMETERS.stub!(:keys).and_return(keys)
+      @interface.should_receive(:add_parameters).with(:a_key)
+      @interface.should_receive(:add_parameters).with(:b_key)
+      @interface.add_standard_params
+    end
+   
+  end
+  
+  describe "add_extended_params" do
+    
+    it "should get the keys for extended parameters" do
+      YahooStock::Interface::EXTENDED_PARAMETERS.should_receive(:keys).and_return([])
+      @interface.add_extended_params
+    end
+    
+    it "should add each parameter" do
+      keys = [:a_key, :b_key]
+      YahooStock::Interface::EXTENDED_PARAMETERS.stub!(:keys).and_return(keys)
+      @interface.should_receive(:add_parameters).with(:a_key)
+      @interface.should_receive(:add_parameters).with(:b_key)
+      @interface.add_extended_params
+    end
+   
+  end
+  
+  describe "add_realtime_params" do
+    
+    it "should get the keys for realtime parameters" do
+      YahooStock::Interface::REALTIME_PARAMETERS.should_receive(:keys).and_return([])
+      @interface.add_realtime_params
+    end
+    
+    it "should add each parameter" do
+      keys = [:a_key, :b_key]
+      YahooStock::Interface::REALTIME_PARAMETERS.stub!(:keys).and_return(keys)
+      @interface.should_receive(:add_parameters).with(:a_key)
+      @interface.should_receive(:add_parameters).with(:b_key)
+      @interface.add_realtime_params
+    end
+   
+  end
+  
 end
