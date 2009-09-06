@@ -227,6 +227,84 @@ module YahooStock
         end
         
       end
+      
+      describe "realtime" do
+        
+        before(:each) do
+          @quote.stub!(:get)
+          @interface.stub!(:add_realtime_params)
+        end
+        
+        it "should clear all existing parameters for the existing instance" do
+          @quote.should_receive(:clear_parameters)
+          @quote.realtime
+        end
+        
+        it "should add the realtime parameters" do
+          @quote.stub!(:clear_parameters)
+          @interface.should_receive(:add_realtime_params)
+          @quote.realtime
+        end
+        
+        it "should get the results" do
+          @quote.stub!(:clear_parameters)
+          @quote.should_receive(:get)
+          @quote.realtime
+        end
+
+      end
+      
+      describe "standard" do
+        
+        before(:each) do
+          @quote.stub!(:get)
+          @interface.stub!(:add_standard_params)
+        end
+        
+        it "should clear all existing parameters for the existing instance" do
+          @quote.should_receive(:clear_parameters)
+          @quote.standard
+        end
+        
+        it "should add the realtime parameters" do
+          @quote.stub!(:clear_parameters)
+          @interface.should_receive(:add_standard_params)
+          @quote.standard
+        end
+        
+        it "should get the results" do
+          @quote.stub!(:clear_parameters)
+          @quote.should_receive(:get)
+          @quote.standard
+        end
+
+      end
+      
+      describe "extended" do
+        
+        before(:each) do
+          @quote.stub!(:get)
+          @interface.stub!(:add_extended_params)
+        end
+        
+        it "should clear all existing parameters for the existing instance" do
+          @quote.should_receive(:clear_parameters)
+          @quote.extended
+        end
+        
+        it "should add the realtime parameters" do
+          @quote.stub!(:clear_parameters)
+          @interface.should_receive(:add_extended_params)
+          @quote.extended
+        end
+        
+        it "should get the results" do
+          @quote.stub!(:clear_parameters)
+          @quote.should_receive(:get)
+          @quote.extended
+        end
+
+      end
   
     end
   end 

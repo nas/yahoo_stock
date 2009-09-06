@@ -71,6 +71,18 @@ module YahooStock
       @interface.results
     end
     
+    # Create methods:
+    #   def realtime
+    #   def extended
+    #   def standard
+    %w{realtime extended standard}.each do |quote_type|
+      self.send(:define_method, "#{quote_type}".to_sym) do
+        clear_parameters
+        @interface.send("add_#{quote_type}_params".to_sym)
+        get
+      end
+    end
+    
     # Adds more stock symbols to the existing instance.
     # One or more stock symbols can be passed as parameter.
     def add_symbols(*symbols)
