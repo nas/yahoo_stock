@@ -26,3 +26,9 @@
 
 * 1 changes related with ruby 1.9:
   * modifies ScripSymbol class to be compatible with ruby 1.9
+
+=== 0.1.6 2009-09-07
+
+* 1 addition:
+  * adds convenience methods Quote#realtime, standard and extended to 
+    fetch relevant stock values

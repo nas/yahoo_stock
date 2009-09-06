@@ -18,6 +18,18 @@ module YahooStock
   # 
   #     quote.get
   # 
+  # * To get data with real time values
+  # 
+  #     quote.realtime
+  # 
+  # * To get data with standard values
+  # 
+  #     quote.standard
+  # 
+  # * To get data with extra parameter values
+  # 
+  #     quote.extended
+  # 
   # * To view the valid parameters that can be passed
   # 
   #     quote.valid_parameters
@@ -72,9 +84,12 @@ module YahooStock
     end
     
     # Create methods:
-    #   def realtime
+    #   def realtime 
+    #     - To get realtime stock values
     #   def extended
+    #     - To get values for extra parameters
     #   def standard
+    #     - To get standard values for stocks
     %w{realtime extended standard}.each do |quote_type|
       self.send(:define_method, "#{quote_type}".to_sym) do
         clear_parameters
