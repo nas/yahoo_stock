@@ -52,8 +52,8 @@ module YahooStock
         row_data = []
         cells.each_with_index do |cell, cell_i|
           datum = cell.sub('</a>','').gsub(/\<.*\>/,'')
-          row_data << datum if !datum.nil? || !datum.any?
-          row_data.reject!{|rd| !rd.any?}
+          row_data << datum if !datum.nil? || datum.empty?
+          row_data.reject!{|rd| rd.empty?}
         end
         data << row_data if row_data.length > 1 
       end

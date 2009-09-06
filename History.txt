@@ -21,3 +21,8 @@
 * 2 changes related with ruby 1.9:
   * modifies quote class to be compatible with ruby 1.9
   * modifies interface class to be compatible with 1.9
+
+=== 0.1.5 2009-09-06
+
+* 1 changes related with ruby 1.9:
+  * modifies ScripSymbol class to be compatible with ruby 1.9
