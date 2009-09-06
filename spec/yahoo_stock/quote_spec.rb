@@ -10,11 +10,15 @@ module YahooStock
       end
     
       it "should raise QuoteException error when parameter passed is nil" do
-        lambda { YahooStock::Quote.new(nil)}.should raise_error Quote::QuoteException
+        lambda { YahooStock::Quote.new(nil)}.should raise_error(Quote::QuoteException, 'You must provide a hash of stock symbols to fetch data')
+      end
+      
+      it "should raise QuoteException error when parameter passed is not a hash" do
+        lambda { YahooStock::Quote.new('erred')}.should raise_error(Quote::QuoteException, 'You must provide a hash of stock symbols to fetch data')
       end
     
       it "should raise QuoteException when a hash of stock_symbols are not passed" do
-        lambda { YahooStock::Quote.new(:misspelled => 'YHOO')}.should raise_error(Quote::QuoteException, 'You must provide a hash of stock symbols to fetch data')
+        lambda { YahooStock::Quote.new(:misspelled => 'YHOO')}.should raise_error(Quote::QuoteException, 'You must provide atleast one stock symbol to fetch data')
       end
     
       it "should raise QuoteException when stock symbols hash key value is an emtpy array" do

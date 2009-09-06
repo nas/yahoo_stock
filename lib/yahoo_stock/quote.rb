@@ -51,7 +51,7 @@ module YahooStock
     # 
     # e.g. :read_parameters => [:last_trade_price_only, :last_trade_date]
     def initialize(options)
-      if options.nil? || !options[:stock_symbols]
+      if options.nil? || !options.is_a?(Hash)
         raise QuoteException, "You must provide a hash of stock symbols to fetch data"
       end
       if options[:stock_symbols].nil? || options[:stock_symbols].empty?
@@ -60,7 +60,7 @@ module YahooStock
       if !(options[:read_parameters] && options[:read_parameters].any?)
         options[:read_parameters] = [:last_trade_price_only, :last_trade_date]
       end
-      options[:stock_symbols] = options[:stock_symbols].to_a unless options[:stock_symbols].kind_of?(Array)
+      options[:stock_symbols] = Array.new << options[:stock_symbols] unless options[:stock_symbols].is_a?(Array)
       @interface = YahooStock::Interface.new(options)
     end
     
