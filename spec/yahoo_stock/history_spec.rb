@@ -71,7 +71,7 @@ describe YahooStock::History do
         }.should raise_error(YahooStock::History::HistoryError, 'End date must be greater than the start date')
     end
     
-    it "should raise error when start date is not less than today" do
+    it "should not raise error when start date is in the past, end date is greater than start date and all relevant keys are present with right type" do
       lambda { YahooStock::History.new(:stock_symbol => 'd', :start_date => Date.today-7, :end_date => Date.today-1) 
         }.should_not raise_error
       
