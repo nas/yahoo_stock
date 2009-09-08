@@ -129,9 +129,9 @@ module YahooStock
       if !stock_params_hash[:read_parameters] || stock_params_hash[:read_parameters].length.zero?
         raise InterfaceError, 'Dont know what data to get'
       end
-      @stock_symbols = stock_params_hash[:stock_symbols]
-      @yahoo_url_parameters    = stock_params_hash[:read_parameters]
-      @base_url      = "http://download.finance.yahoo.com/d/quotes.csv"
+      @stock_symbols        = stock_params_hash[:stock_symbols]
+      @yahoo_url_parameters = stock_params_hash[:read_parameters]
+      @base_url             = "http://download.finance.yahoo.com/d/quotes.csv"
     end
     
     # Generate full url to be sent to yahoo

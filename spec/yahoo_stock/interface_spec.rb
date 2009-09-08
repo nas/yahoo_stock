@@ -6,7 +6,7 @@ describe YahooStock::Interface do
     @interface = YahooStock::Interface.new(:stock_symbols => ['MSFT'], :read_parameters => [:last_trade_price_only])
   end
   
-  describe "initialize" do
+  describe ".new" do
     
     it "should raise InterfaceError when stock params hash is nil" do
       lambda { YahooStock::Interface.new(nil)
