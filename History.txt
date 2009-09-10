@@ -32,3 +32,8 @@
 * 1 addition:
   * adds convenience methods Quote#realtime, standard and extended to 
     fetch relevant stock values
+
+=== 1.0.1 2009-09-10
+
+* 1 addition:
+  * adds feature to retreive historical stock data
