@@ -73,7 +73,7 @@ module YahooStock
         options[:read_parameters] = [:last_trade_price_only, :last_trade_date]
       end
       options[:stock_symbols] = Array.new << options[:stock_symbols] unless options[:stock_symbols].is_a?(Array)
-      @interface = YahooStock::Interface.new(options)
+      @interface = YahooStock::Interface::Quote.new(options)
     end
     
     # Returns results for the stock symbols as a hash.

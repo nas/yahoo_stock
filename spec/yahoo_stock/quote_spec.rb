@@ -55,7 +55,7 @@ module YahooStock
       end
       
       it "should create a new instance of the Stock Interface class" do
-        YahooStock::Interface.should_receive(:new)
+        YahooStock::Interface::Quote.should_receive(:new)
         YahooStock::Quote.new(:stock_symbols => 'test')
       end
       
@@ -64,8 +64,8 @@ module YahooStock
     describe "subject" do
       
       before(:each) do
-        @interface = mock(YahooStock::Interface)
-        YahooStock::Interface.stub!(:new).and_return(@interface)
+        @interface = mock(YahooStock::Interface::Quote)
+        YahooStock::Interface::Quote.stub!(:new).and_return(@interface)
         @quote = YahooStock::Quote.new(:stock_symbols => 'MSFT')
       end
   
