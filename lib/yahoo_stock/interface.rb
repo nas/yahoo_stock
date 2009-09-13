@@ -20,11 +20,6 @@ module YahooStock
     
     attr_accessor :base_url, :uri_parameters
     
-    def initialize
-      @base_url       = nil
-      @uri_parameters = nil
-    end
-    
     # Send request to the uri and get results
     def get
       begin
