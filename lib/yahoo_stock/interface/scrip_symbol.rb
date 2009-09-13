@@ -12,11 +12,13 @@ module YahooStock
       @company = company.gsub(/\s/,'+')
     end
     
+    # Generate full uri with the help of uri method of the superclass
     def uri
       @uri_parameters = {:s => @company}
       super()  
     end
 
+    # Get uri content with the help of get method of the super class
     def get
       uri
       super()
