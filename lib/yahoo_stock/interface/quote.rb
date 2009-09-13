@@ -6,7 +6,6 @@ http://finance.yahoo.com/d/quotes.csv?s=XOM+BBDb.TO+JNJ+MSFT&f=snd1l1yr
 
 =end
 
-require 'net/http'
 module YahooStock
    # ==DESCRIPTION:
    # 
