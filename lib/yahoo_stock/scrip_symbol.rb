@@ -36,8 +36,7 @@ module YahooStock
     # 
     #     symbol.find
     def initialize(company)
-      company = company.gsub(/\s/,'+')
-      @base_url = "http://finance.yahoo.com/lookup/all?s=#{company}"
+      @interface = YahooStock::Interface::ScripSymbol.new(company)
       @before_element = 'yfi_sym_results'
       @after_element = 'yfi_fp_left_bottom'
     end
