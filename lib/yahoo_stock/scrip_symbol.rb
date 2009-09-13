@@ -86,7 +86,7 @@ module YahooStock
     
     # Makes an http request to the given url and returns only the text among two points
     def get_results
-      @body ||= Net::HTTP.get(URI.parse(@base_url)).gsub!(/\s*/,'')
+      @body ||= @interface.get.gsub!(/\s*/,'')
       pattern = /#{@before_element}.*#{@after_element}/
       results = pattern.match(@body)
       if results
