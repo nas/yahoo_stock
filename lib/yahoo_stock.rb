@@ -4,6 +4,9 @@ $:.unshift(File.dirname(__FILE__)) unless
 require 'date'
 require 'yahoo_stock/scrip_symbol.rb'
 require 'yahoo_stock/interface.rb'
+require 'yahoo_stock/interface/quote.rb'
+require 'yahoo_stock/interface/history.rb'
+require 'yahoo_stock/interface/scrip_symbol.rb'
 require 'yahoo_stock/quote.rb' 
 require 'yahoo_stock/history.rb'
 
