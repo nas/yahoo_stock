@@ -36,7 +36,7 @@ module YahooStock
       :average_daily_volume => 'a2',
       :bid => 'b',
       :bid_size => 'b4'
-    }
+    } unless defined?(STD_PARAMETERS)
 
     EXTENDED_PARAMETERS = {
       :symbol => 's',
@@ -85,7 +85,7 @@ module YahooStock
       :fifty_two_week_low => 'j',
       :fifty_two_week_high => 'k',
       :more_info => 'i',
-    }
+    } unless defined?(EXTENDED_PARAMETERS)
 
     REALTIME_PARAMETERS = {
       :symbol => 's',
@@ -105,7 +105,7 @@ module YahooStock
       :p_e_ratio_real_time => 'r2',
       :holdings_value_real_time => 'v7',
       :day_value_change_real_time => 'w4',
-    }
+    } unless defined?(REALTIME_PARAMETERS)
     
     attr_accessor :stock_symbols, :yahoo_url_parameters
     

@@ -16,7 +16,7 @@ module YahooStock
       :quote        => "http://download.finance.yahoo.com/d/quotes.csv",
       :history      => "http://ichart.finance.yahoo.com/table.csv",
       :scrip_symbol => "http://finance.yahoo.com/lookup/all"
-    }
+    } unless defined?(BASE_URLS)
     
     attr_accessor :base_url, :uri_parameters
     
