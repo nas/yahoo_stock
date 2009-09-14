@@ -9,6 +9,7 @@ require 'yahoo_stock/interface/history.rb'
 require 'yahoo_stock/interface/scrip_symbol.rb'
 require 'yahoo_stock/quote.rb' 
 require 'yahoo_stock/history.rb'
+require 'yahoo_stock/result_parser.rb'
 
 module YahooStock
   VERSION = '0.1.3'
