@@ -15,7 +15,7 @@ module YahooStock
       end
       
       def output
-        val = @data.gsub(/\"/,'').split(/\r\n/)
+        val = @data.gsub(/\"/,'').split(/\r\n|\n/)
         new_val = []
         val.each {|v| new_val << v.split(',')}
         return new_val

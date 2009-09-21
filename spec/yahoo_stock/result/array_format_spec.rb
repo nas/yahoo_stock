@@ -16,14 +16,14 @@ describe YahooStock::Result::ArrayFormat do
     it "should create array element for each line by splitting it for the line break" do
       string = "asdfsdf,as,f asf s"
       @data.stub!(:gsub).and_return(string)
-      string.should_receive(:split).with(/\r\n/).and_return([])
+      string.should_receive(:split).with(/\r\n|\n/).and_return([])
       @array_format.output
     end
     
     it "should create a sub array for each line by splitting them for each comma" do
       string = "asdfsdf,as,f asf s"
       @data.stub!(:gsub).and_return(string)
-      string.stub!(:split).with(/\r\n/).and_return([string])
+      string.stub!(:split).with(/\r\n|\n/).and_return([string])
       string.should_receive(:split).with(',').and_return([])
       @array_format.output
     end

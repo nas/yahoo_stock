@@ -30,7 +30,7 @@ describe YahooStock::Base do
         }.should eql('Block to pass, probably, a class with format output method')
     end
     
-    it "should use the ArrayFormat class for results when :to_array is passed to the formate param" do
+    it "should use the ArrayFormat class for results when :to_array is passed to the format param" do
       @base.stub!(:find)
       YahooStock::Result::ArrayFormat.should_receive(:output)
       @base.format(:to_array)
