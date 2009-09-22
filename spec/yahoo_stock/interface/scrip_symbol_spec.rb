@@ -88,22 +88,4 @@ describe YahooStock::Interface::ScripSymbol do
     
   end
   
-  # Returns all possible values in a single string
-  # def values
-  #     return @values if @values
-  #     data = []
-  #     rows = text_range.to_s.split(/\<\/tr>/)
-  #     rows.each_with_index do |row, row_i|
-  #       cells = row.split(/\<\/td>/)
-  #       row_data = []
-  #       cells.each_with_index do |cell, cell_i|
-  #         datum = cell.sub('</a>','').gsub(/\<.*\>/,'')
-  #         row_data << datum if !datum.nil? || datum.empty?
-  #         row_data.reject!{|rd| rd.empty?}
-  #       end
-  #       data << row_data.join(', ') if row_data.length > 1 
-  #     end
-  #     @values = data.join("\r\n")
-  #   end
-  
 end
