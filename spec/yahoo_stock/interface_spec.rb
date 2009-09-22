@@ -19,7 +19,10 @@ describe YahooStock::Interface do
     
     it "should generate full url with all paramenters" do
       @interface.uri_parameters = {:s => 'boom', :f => 'toom', :k => 'zoom'}
-      @interface.uri.should eql('http://download.finance.yaaaaahoo.com/d/quotes.csv?s=boom&f=toom&k=zoom')
+      @interface.uri.should =~ /http:\/\/download.finance.yaaaaahoo.com\/d\/quotes.csv?/
+      @interface.uri.should =~ /s=boom/
+      @interface.uri.should =~ /f=toom/
+      @interface.uri.should =~ /k=zoom/
     end
   end
   
@@ -80,6 +83,23 @@ describe YahooStock::Interface do
     
   end
   
+  describe "values" do
+    it "should call get to receive the values" do
+      @interface.should_receive(:get)
+      @interface.values
+    end
+    
+    it "should not call get when values are already set" do
+      @interface.stub!(:values).and_return('some string')
+      @interface.should_not_receive(:get)
+      @interface.values
+    end
+  end
   
+  describe "update" do
+    it "should set the values to nil" do
+      @interface.update.should be_nil
+    end
+  end
   
 end

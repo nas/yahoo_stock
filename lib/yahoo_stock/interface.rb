@@ -3,13 +3,14 @@
 =end
 
 require 'net/http'
+require 'observer'
 module YahooStock
    # ==DESCRIPTION:
    # 
    # Class to generate the right url and interface with yahoo
    #
   class Interface
-
+    include Observable
     class InterfaceError < RuntimeError ; end
 
     BASE_URLS = {
@@ -37,6 +38,15 @@ module YahooStock
       params_with_values = []
       @uri_parameters.each {|k,v| params_with_values << "#{k}=#{v}"}
       @base_url+'?'+params_with_values.join('&')
+    end
+    
+    # Get result string
+    def values
+      @values ||= get
+    end
+    
+    def update
+      @values = nil
     end
     
     private 
