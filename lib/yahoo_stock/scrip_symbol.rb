@@ -27,7 +27,7 @@ module YahooStock
   # 
   #     YahooStock::ScripSymbol.save_options_to_file('path/to/filename','company1', 'company2')
   # 
-  class ScripSymbol
+  class ScripSymbol < Base
     # Initialize with the name of the company as parameter for which stock symbol is needed
     # 
     #     symbol = YahooStock::ScripSymbol.new('company name')
@@ -35,26 +35,6 @@ module YahooStock
     #     symbol.find
     def initialize(company)
       @interface = YahooStock::Interface::ScripSymbol.new(company)
-      @before_element = 'yfi_sym_results'
-      @after_element = 'yfi_fp_left_bottom'
-    end
-    
-    # Returns an array of arrays where each outer array is the different option for the company name
-    # you provided and the inner array includes stock symbol, full company name, stock price, exchange symbol.
-    def find
-      data = []
-      rows = get_results.to_s.split(/\<\/tr>/)
-      rows.each_with_index do |row, row_i|
-        cells = row.split(/\<\/td>/)
-        row_data = []
-        cells.each_with_index do |cell, cell_i|
-          datum = cell.sub('</a>','').gsub(/\<.*\>/,'')
-          row_data << datum if !datum.nil? || datum.empty?
-          row_data.reject!{|rd| rd.empty?}
-        end
-        data << row_data if row_data.length > 1 
-      end
-      data
     end
     
     # This is just a convenience method to print all results on your console screen 
@@ -77,18 +57,6 @@ module YahooStock
             f.puts('')
           end
         end
-      end
-    end
-    
-    private
-    
-    # Makes an http request to the given url and returns only the text among two points
-    def get_results
-      @body ||= @interface.get.gsub!(/\s*/,'')
-      pattern = /#{@before_element}.*#{@after_element}/
-      results = pattern.match(@body)
-      if results
-        return results[0]
       end
     end
     
