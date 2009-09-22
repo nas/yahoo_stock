@@ -46,71 +46,71 @@ describe YahooStock::Interface::History do
     
     it "should raise error when end_date value is nil" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-1, 
-                                       :end_date => nil) }.should raise_error(YahooStock::Interface::History::HistoryError, ':end_date value cannot be blank')
+                                                  :start_date => Date.today-1, 
+                                                  :end_date => nil) }.should raise_error(YahooStock::Interface::History::HistoryError, ':end_date value cannot be blank')
     end
     
     it "should raise error when end_date value is blank" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-1, 
-                                       :end_date => '') }.should raise_error(YahooStock::Interface::History::HistoryError, ':end_date value cannot be blank')
+                                                  :start_date => Date.today-1, 
+                                                  :end_date => '') }.should raise_error(YahooStock::Interface::History::HistoryError, ':end_date value cannot be blank')
     end
     
     it "should raise error when end date value is not of type date" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-1, 
-                                       :end_date => 'sds') }.should raise_error(YahooStock::Interface::History::HistoryError, 'End date must be of type Date')
+                                                  :start_date => Date.today-1, 
+                                                  :end_date => 'sds') }.should raise_error(YahooStock::Interface::History::HistoryError, 'End date must be of type Date')
     end
     
     it "should raise error when start date is not less than today" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today, 
-                                       :end_date => Date.today) 
+                                                  :start_date => Date.today, 
+                                                  :end_date => Date.today) 
         }.should raise_error(YahooStock::Interface::History::HistoryError, 'Start date must be in the past')
     end
     
     it "should raise error when start date is greater than end date" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-7, 
-                                       :end_date => Date.today-8) 
+                                                  :start_date => Date.today-7, 
+                                                  :end_date => Date.today-8) 
         }.should raise_error(YahooStock::Interface::History::HistoryError, 'End date must be greater than the start date')
     end
     
     it "should not raise error when start date is in the past, end date is greater than start date and all relevant keys are present with right type" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-7, 
-                                       :end_date => Date.today-1) 
+                                                  :start_date => Date.today-7, 
+                                                  :end_date => Date.today-1) 
         }.should_not raise_error
       
     end
     
     it "should by default set interval to daily if no value provided for it" do
       @history = YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-7, 
-                                       :end_date => Date.today-1)
+                                                    :start_date => Date.today-7, 
+                                                    :end_date => Date.today-1)
       @history.interval.should eql(:daily)
     end
     
     it "should raise invalid keys error when an invalid key is passed in the parameter" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-7, 
-                                       :end_date => Date.today-1, :boom => 1) }.should raise_error(YahooStock::Interface::History::HistoryError, "An invalid key 'boom' is passed in the parameters. Allowed keys are stock_symbol, start_date, end_date, interval")
+                                                  :start_date => Date.today-7, 
+                                                  :end_date => Date.today-1, :boom => 1) }.should raise_error(YahooStock::Interface::History::HistoryError, "An invalid key 'boom' is passed in the parameters. Allowed keys are stock_symbol, start_date, end_date, interval")
     end
     
     it "should raise error when interval is neither :daily, :weekly or :monthly" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-7, 
-                                       :end_date => Date.today-1,
-                                       :interval => :yearly)
+                                                  :start_date => Date.today-7, 
+                                                  :end_date => Date.today-1,
+                                                  :interval => :yearly)
                                         }.should raise_error(YahooStock::Interface::History::HistoryError, "Allowed values for interval are daily, weekly, monthly")
       
     end
     
     it "should not raise error when interval is :daily" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                       :start_date => Date.today-7, 
-                                       :end_date => Date.today-1,
-                                       :interval => :daily)
+                                                  :start_date => Date.today-7, 
+                                                  :end_date => Date.today-1,
+                                                  :interval => :daily)
                                         }.should_not raise_error
       
     end
@@ -119,8 +119,8 @@ describe YahooStock::Interface::History do
   describe "setters" do
     before(:each) do
       @history = YahooStock::Interface::History.new(:stock_symbol => 'd', 
-                                         :start_date => Date.today-7, 
-                                         :end_date => Date.today-1)
+                                                    :start_date => Date.today-7, 
+                                                    :end_date => Date.today-1)
     end
     
     it "should raise error when stock symbol is being set to nil" do
@@ -179,5 +179,139 @@ describe YahooStock::Interface::History do
       @history.interval.should eql(:daily)
     end
     
+    it "should set the interval default to daily if not set" do
+      @history.interval.should eql(:daily)
+    end
   end
+  
+  describe "uri" do
+    before(:each) do
+      @history = YahooStock::Interface::History.new(:stock_symbol => 'symbol', 
+                                                    :start_date => Date.today-7, 
+                                                    :end_date => Date.today-1)
+    end
+    
+    it "should get the interval to generate url" do
+      @history.should_receive(:interval)
+      @history.uri
+    end
+    
+    it "should get the day of the start date" do
+      @history.start_date.should_receive(:day)
+      @history.uri
+    end
+    
+    it "should get the day of the end date" do
+      @history.end_date.should_receive(:day)
+      @history.uri
+    end
+    
+    it "should get the year of the start date" do
+      @history.start_date.should_receive(:year)
+      @history.uri
+    end
+    
+    it "should get the day of the end date" do
+      @history.start_date.should_receive(:year)
+      @history.uri
+    end
+    
+    it "should get the month of the start and end date" do
+      @history.should_receive(:sprintf).exactly(2)
+      @history.uri
+    end
+    
+    it "should have the base url" do
+      @history.uri.should =~ /http:\/\/ichart.finance.yahoo.com\/table.csv?/
+    end
+    
+    it "should have parameter 'a' with month -1 " do
+      month = sprintf("%02d", @history.start_date.month-1)
+      @history.uri.should =~ /a=#{month}/
+    end
+    
+    it "should have parameter 'b' with start date day " do
+      @history.uri.should =~ /b=#{@history.start_date.day}/
+    end
+    
+    it "should have parameter 'c' with start date year " do
+      @history.uri.should =~ /c=#{@history.start_date.year}/
+    end
+    
+    it "should have parameter 'd' with end date month -1 " do
+      month = sprintf("%02d", @history.end_date.month-1)
+      @history.uri.should =~ /d=#{month}/
+    end
+    
+    it "should have parameter 'e' with end date day " do
+      @history.uri.should =~ /e=#{@history.end_date.day}/
+    end
+    
+    it "should have parameter 'f' with end date year " do
+      @history.uri.should =~ /c=#{@history.end_date.year}/
+    end
+    
+    it "should have parameter 'g' with interval" do
+      @history.uri.should =~ /g=d/
+    end
+    
+    it "should have the parameter 's' with stock symbol" do
+      @history.uri.should =~ /s=symbol/
+    end
+    
+  end
+  
+  describe "get" do
+    before(:each) do
+      @history = YahooStock::Interface::History.new(:stock_symbol => 'd', 
+                                                    :start_date => Date.today-7, 
+                                                    :end_date => Date.today-1)
+      response = stub('HTTP')
+      Net::HTTP.stub!(:get_response).and_return(response)
+      response.stub!(:code).and_return('200')
+      response.stub!(:body)
+    end
+    
+    it "should check the stock symbol" do
+      @history.should_receive(:stock_symbol).times.at_least(2).and_return('symbol')
+      @history.get
+    end
+    
+    it "should check the end date" do
+      @history.should_receive(:end_date).times.at_least(1).and_return(Date.today-1)
+      @history.get
+    end
+    
+    it "should check the start date" do
+      @history.should_receive(:start_date).times.at_least(1).and_return(Date.today-7)
+      @history.get
+    end
+    
+    it "should raise error if start date is not present" do
+      @history.stub!(:start_date)
+      lambda { @history.get }.should raise_error('Cannot send request unless all parameters, ie stock_symbol, start and end date are present')
+    end
+    
+    it "should raise error if end date is not present" do
+      @history.stub!(:end_date)
+      lambda { @history.get }.should raise_error('Cannot send request unless all parameters, ie stock_symbol, start and end date are present')
+    end
+    
+    it "should raise error if stock symbol is not present" do
+      @history.stub!(:stock_symbol)
+      lambda { @history.get }.should raise_error('Cannot send request unless all parameters, ie stock_symbol, start and end date are present')
+    end
+    
+    it "should send the http request to yahoo" do
+      Net::HTTP.should_receive(:get_response)
+      @history.get
+    end
+    
+    it "should parse the url" do
+      URI.should_receive(:parse)
+      @history.get
+    end
+    
+  end
+  
 end

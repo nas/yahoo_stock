@@ -23,6 +23,17 @@ module YahooStock
     
     attr_reader :stock_symbol, :start_date, :end_date, :interval
     
+    # The options parameter expects a hash with 4 key value pairs
+    #
+    # :stock_symbol => 'goog', :start_date => Date.today-30,
+    # :end_date => Date.today-10, :interval => :weekly
+    #
+    # The interval option accepts :daily, :monthly and :weekly values
+    #
+    # The interval key is optional, if not used then by default uses :daily
+    #
+    # and provides daily history for the specified date range
+    #
     def initialize(options)
       @base_url = BASE_URLS[:history]
       validate_keys(options)
@@ -39,23 +50,31 @@ module YahooStock
       validate_history_range
     end
     
+    # Make sure that stock symbol is not nil or an empty string before setting it
     def stock_symbol=(stock_symbol)
       validate_stock_symbol_attribute(stock_symbol)
       @stock_symbol = stock_symbol
     end
     
+    # Before setting start date
+    #   - Make sure that it is of type date
+    #   - Make sure that it is before the end date
     def start_date=(start_date)
       validate_start_date_type(start_date)
       validate_history_range(start_date)
       @start_date = start_date
     end
     
+    # Before setting end date
+    #   - Make sure that it is of type date
+    #   - Make sure that it is after the start date
     def end_date=(end_date)
       validate_end_date_type(end_date)
       validate_history_range(start_date, end_date)
       @end_date = end_date
     end
     
+    # Set interval to specify whether daily, weekly or monthly histroy required
     def interval=(interval)
       validate_interval_values(interval)
       @interval = interval
