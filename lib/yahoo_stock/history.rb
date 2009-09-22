@@ -1,5 +1,5 @@
 module YahooStock
-  class History
+  class History < Base
     
     class HistoryError < RuntimeError; end
     
@@ -10,6 +10,7 @@ module YahooStock
       @interface = YahooStock::Interface::History.new(options)
     end
     
+    # NEED TO MOVE THIS METHOD TO HASH_FORMAT CLASS
     # Return an array of hashes with latest date first
     # Each array element contains a hash of date, volume traded, opening, closing, high and low prices
     def results
