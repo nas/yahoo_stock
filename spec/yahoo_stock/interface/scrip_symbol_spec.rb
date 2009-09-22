@@ -46,4 +46,64 @@ describe YahooStock::Interface::ScripSymbol do
     end
   end
   
+  describe "values" do
+    before(:each) do
+      @text = "<tr><td>Company Name</td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
+      @scrip_symbol = YahooStock::Interface::ScripSymbol.new('a company')
+      @scrip_symbol.stub!(:text_range).and_return(@text)
+    end
+    
+    it "should use the get values pvt method to generate the values string" do
+      @scrip_symbol.should_receive(:get_values)
+      @scrip_symbol.values
+    end
+    
+    it "should not call the get values pvt method if the value is already present" do
+      @scrip_symbol.stub!(:values).and_return('somthing')
+      @scrip_symbol.should_not_receive(:get_values)
+      @scrip_symbol.values
+    end
+    
+    it "should return a comma separated string" do
+      @scrip_symbol.values.should eql('Company Name, symbol, price')
+    end
+    
+    it "should return a comma separated string with line break chars if more than one row is present" do
+      @text += "<tr><td>Company Name</td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
+      @scrip_symbol.stub!(:text_range).and_return(@text)
+      @scrip_symbol.values.should eql("Company Name, symbol, price\r\nCompany Name, symbol, price")
+    end
+    
+    it "should remove any hyperlinks" do
+      @text += "<tr><td><a href='asd'>Company Name</a></td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
+      @scrip_symbol.stub!(:text_range).and_return(@text)
+      @scrip_symbol.values.should eql("Company Name, symbol, price\r\nCompany Name, symbol, price")
+    end
+    
+    it "should get rid of any blank values" do
+       @text += "<tr><td></td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
+        @scrip_symbol.stub!(:text_range).and_return(@text)
+        @scrip_symbol.values.should eql("Company Name, symbol, price\r\nsymbol, price")
+    end
+    
+  end
+  
+  # Returns all possible values in a single string
+  # def values
+  #     return @values if @values
+  #     data = []
+  #     rows = text_range.to_s.split(/\<\/tr>/)
+  #     rows.each_with_index do |row, row_i|
+  #       cells = row.split(/\<\/td>/)
+  #       row_data = []
+  #       cells.each_with_index do |cell, cell_i|
+  #         datum = cell.sub('</a>','').gsub(/\<.*\>/,'')
+  #         row_data << datum if !datum.nil? || datum.empty?
+  #         row_data.reject!{|rd| rd.empty?}
+  #       end
+  #       data << row_data.join(', ') if row_data.length > 1 
+  #     end
+  #     @values = data.join("\r\n")
+  #   end
+  
 end
