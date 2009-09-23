@@ -11,7 +11,9 @@ module YahooStock
   # 
   #     symbol = YahooStock::ScripSymbol.new('company name')
   # 
-  #     symbol.find
+  #     symbol.find #will return a string
+  # 
+  #     symbol.format :to_array, #will return an array of values instead of a string
   # 
   # will give you an array of arrays where each outer array is the different option for the company name
   # you provided and the inner array includes stock symbol, full company name, stock price, exchange symbol
