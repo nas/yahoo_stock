@@ -107,7 +107,7 @@ module YahooStock
       :day_value_change_real_time => 'w4',
     } unless defined?(REALTIME_PARAMETERS)
     
-    attr_accessor :stock_symbols, :yahoo_url_parameters
+    attr_reader :stock_symbols, :yahoo_url_parameters
     
     # The stock_params_hash parameter expects a hash with two key value pairs
     # 
@@ -115,7 +115,7 @@ module YahooStock
     # 
     # e.g. :stock_symbols => ['YHOO']
     # 
-    # another hash :read_parameters => 'array of values'
+    # another hash :read_parameters => ['array of values']
     # 
     # e.g. :read_parameters => [:last_trade_price_only, :last_trade_date]
     def initialize(stock_params_hash)
@@ -126,19 +126,37 @@ module YahooStock
         raise(QuoteError, 'No stocks passed')
       end
       if !stock_params_hash[:read_parameters] || stock_params_hash[:read_parameters].length.zero?
-        raise QuoteError, 'Dont know what data to get'
+        raise QuoteError, 'Read parameters are not provided'
       end
       @stock_symbols        = stock_params_hash[:stock_symbols]
       @yahoo_url_parameters = stock_params_hash[:read_parameters]
       @base_url             = BASE_URLS[:quote]
+      add_observer(self)
+    end
+    
+    def stock_symbols=(stock_symbol)
+      symbols_on_read = @stock_symbols.dup
+      @stock_symbols ||= []
+      @stock_symbols << stock_symbol unless @stock_symbols.include?(stock_symbol)
+      run_observers if symbols_on_read != @stock_symbols
+    end
+    
+    def yahoo_url_parameters=(yahoo_url_parameter)
+      params_on_read = @yahoo_url_parameters.dup
+      unless allowed_parameters.include?(yahoo_url_parameter)
+        raise QuoteError, "Interface parameter #{yahoo_url_parameter} is not a valid parameter."
+      end
+      @yahoo_url_parameters ||= []
+      @yahoo_url_parameters << yahoo_url_parameter unless @yahoo_url_parameters.include?(yahoo_url_parameter)
+      run_observers if params_on_read != @yahoo_url_parameters
     end
     
     # Generate full url to be sent to yahoo
     def uri
       @all_stock_symbols = stock_symbols.join('+')
-      params = yahoo_url_parameters-allowed_parameters
-      unless params.length.zero?
-        raise QuoteError, "The parameters '#{params.join(', ')}' are not valid. Please check using YahooStock::Interface::Quote#allowed_parameters or YahooStock::Quote#valid_parameters" 
+      invalid_params = yahoo_url_parameters-allowed_parameters
+      unless invalid_params.length.zero?
+        raise QuoteError, "The parameters '#{invalid_params.join(', ')}' are not valid. Please check using YahooStock::Interface::Quote#allowed_parameters or YahooStock::Quote#valid_parameters" 
       end
       @parameter_values  = yahoo_url_parameters.collect {|v| parameters[v]}.join('')
       if @all_stock_symbols.empty?
@@ -151,24 +169,19 @@ module YahooStock
       super()
     end
     
+    # Read the result using get method in super class
     def get
       uri
       super()
     end
     
-    # Get the csv file and create an array of different stock symbols and values returned 
-    # for the parameters passed based on line break.
-    
-    def get_values
-      get.gsub(/\"/,'').split(/\r\n/)
-    end
-    
+    # TODO MOVE TO THE HASH CLASS
     # Returns results for the stock symbols as a hash.
     # The hash keys are the stock symbols and the values are a hash of the keys and 
     # values asked for that stock.
     def results
       stock = {}
-      get_values.each_with_index do |values, index|
+      values.each_with_index do |values, index|
         parsed_values = values.split(',')
         stock[stock_symbols[index]] ||= {}
         parsed_values.each_with_index do |value, i|
@@ -180,11 +193,7 @@ module YahooStock
     
     # Add stock symbols to the url.
     def add_symbols(*symbols)
-      symbols.each do |symbol|
-        unless stock_symbols.include?(symbol)
-          stock_symbols << symbol
-        end
-      end
+      symbols.each {|symbol| self.stock_symbols = symbol }
     end
     
     # Remove stock symbols from the url.
@@ -193,20 +202,17 @@ module YahooStock
         unless stock_symbols.include?(symbol)
           raise QuoteError, "Cannot remove stock symbol #{symbol} as it is currently not present."
         end
+        if stock_symbols.length == 1
+          raise QuoteError, "Symbol #{symbol} is the last symbol. Please add another symbol before removing this."
+        end
         stock_symbols.reject!{|stock_sym| stock_sym == symbol}
+        run_observers
       end
     end
     
     # Add parameters to the url.
     def add_parameters(*parameters)
-      parameters.each do |parameter|
-        unless allowed_parameters.include?(parameter)
-          raise QuoteError, "Interface parameter #{parameter} is not a valid parameter."
-        end
-        unless yahoo_url_parameters.include?(parameter)
-          yahoo_url_parameters << parameter
-        end
-      end
+      parameters.each {|parameter| self.yahoo_url_parameters = parameter }
     end
     
     # Remove parameters from the url.
@@ -215,7 +221,11 @@ module YahooStock
         unless yahoo_url_parameters.include?(parameter)
           raise QuoteError, "Parameter #{parameter} is not present in current list"
         end
+        if yahoo_url_parameters.length == 1
+          raise QuoteError, "Parameter #{parameter} is the last parameter. Please add another parameter before removing this."     
+        end
         yahoo_url_parameters.reject!{|parameter_key| parameter_key == parameter}
+        run_observers
       end
     end
     
@@ -226,23 +236,40 @@ module YahooStock
     
     # Add standard parameters
     def add_standard_params
-      STD_PARAMETERS.keys.each { |parameter| add_parameters(parameter) }
+      add_grouped_parameters(STD_PARAMETERS.keys)
     end
     
     # Add extended parameters
     def add_extended_params
-      EXTENDED_PARAMETERS.keys.each { |parameter| add_parameters(parameter) }
+      add_grouped_parameters(EXTENDED_PARAMETERS.keys)
     end
     
     # Add realtime parameters
     def add_realtime_params
-      REALTIME_PARAMETERS.keys.each { |parameter| add_parameters(parameter) }
+      add_grouped_parameters(REALTIME_PARAMETERS.keys)
+    end
+    
+    # Clear all existing parameters from the current instance.
+    def clear_parameters
+      yahoo_url_parameters.clear
+      run_observers
     end
     
     private
     
+    def add_grouped_parameters(parameter_group)
+      return if (parameter_group - yahoo_url_parameters).empty?
+      clear_parameters
+      parameter_group.each { |parameter| add_parameters(parameter) }
+    end
+    
+    def run_observers
+      changed
+      notify_observers
+    end
+    
     def parameters
-      STD_PARAMETERS.merge!(EXTENDED_PARAMETERS).merge!(REALTIME_PARAMETERS)
+      STD_PARAMETERS.merge(EXTENDED_PARAMETERS).merge(REALTIME_PARAMETERS)
     end
     
   end
