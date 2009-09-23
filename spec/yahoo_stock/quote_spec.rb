@@ -68,14 +68,6 @@ module YahooStock
         YahooStock::Interface::Quote.stub!(:new).and_return(@interface)
         @quote = YahooStock::Quote.new(:stock_symbols => 'MSFT')
       end
-  
-      describe "get" do
-      
-        it "should get the results from the interface" do
-          @interface.should_receive(:results)
-          @quote.get
-        end
-      end
       
       describe "add_symbols" do
         
@@ -219,14 +211,7 @@ module YahooStock
       describe "clear_parameters" do
         
         it "should get all values for parameters from the interface" do
-          @interface.should_receive(:yahoo_url_parameters).and_return([])
-          @quote.clear_parameters
-        end
-        
-        it "should remove the parameter from existing parameters by calling remove parameters on interface for each parameter" do
-          params = ['param1', 'param2']
-          @interface.stub!(:yahoo_url_parameters).and_return(params)
-          params.should_receive(:clear)
+          @interface.should_receive(:clear_parameters)
           @quote.clear_parameters
         end
         
@@ -235,24 +220,17 @@ module YahooStock
       describe "realtime" do
         
         before(:each) do
-          @quote.stub!(:get)
+          @quote.stub!(:find)
           @interface.stub!(:add_realtime_params)
         end
         
-        it "should clear all existing parameters for the existing instance" do
-          @quote.should_receive(:clear_parameters)
-          @quote.realtime
-        end
-        
         it "should add the realtime parameters" do
-          @quote.stub!(:clear_parameters)
           @interface.should_receive(:add_realtime_params)
           @quote.realtime
         end
         
-        it "should get the results" do
-          @quote.stub!(:clear_parameters)
-          @quote.should_receive(:get)
+        it "should find the results" do
+          @quote.should_receive(:find)
           @quote.realtime
         end
 
@@ -261,24 +239,17 @@ module YahooStock
       describe "standard" do
         
         before(:each) do
-          @quote.stub!(:get)
+          @quote.stub!(:find)
           @interface.stub!(:add_standard_params)
         end
         
-        it "should clear all existing parameters for the existing instance" do
-          @quote.should_receive(:clear_parameters)
-          @quote.standard
-        end
-        
-        it "should add the realtime parameters" do
-          @quote.stub!(:clear_parameters)
+        it "should add the standard parameters" do
           @interface.should_receive(:add_standard_params)
           @quote.standard
         end
         
-        it "should get the results" do
-          @quote.stub!(:clear_parameters)
-          @quote.should_receive(:get)
+        it "should find the results" do
+          @quote.should_receive(:find)
           @quote.standard
         end
 
@@ -287,24 +258,17 @@ module YahooStock
       describe "extended" do
         
         before(:each) do
-          @quote.stub!(:get)
+          @quote.stub!(:find)
           @interface.stub!(:add_extended_params)
         end
         
-        it "should clear all existing parameters for the existing instance" do
-          @quote.should_receive(:clear_parameters)
-          @quote.extended
-        end
-        
-        it "should add the realtime parameters" do
-          @quote.stub!(:clear_parameters)
+        it "should add the extended parameters" do
           @interface.should_receive(:add_extended_params)
           @quote.extended
         end
         
-        it "should get the results" do
-          @quote.stub!(:clear_parameters)
-          @quote.should_receive(:get)
+        it "should find the results" do
+          @quote.should_receive(:find)
           @quote.extended
         end
 

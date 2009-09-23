@@ -33,7 +33,6 @@ describe YahooStock::Interface do
       @response.stub!(:body)
       URI.stub!(:parse)
       Net::HTTP.stub!(:get_response).and_return(@response)
-      
     end
     
     it "should get response for the uri" do

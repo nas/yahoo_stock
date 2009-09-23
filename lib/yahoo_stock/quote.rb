@@ -50,7 +50,7 @@ module YahooStock
   # 
   #     quote.remove_symbols('MSFT', 'AAPL')
   # 
-  class Quote
+  class Quote < Base
     class QuoteException < RuntimeError; end
     
     # The options parameter expects a hash with two key value pairs
@@ -76,13 +76,6 @@ module YahooStock
       @interface = YahooStock::Interface::Quote.new(options)
     end
     
-    # Returns results for the stock symbols as a hash.
-    # The hash keys are the stock symbols and the values are a hash of the keys and 
-    # values asked for that stock.
-    def get
-      @interface.results
-    end
-    
     # Create methods:
     #   def realtime 
     #     - To get realtime stock values
@@ -92,9 +85,8 @@ module YahooStock
     #     - To get standard values for stocks
     %w{realtime extended standard}.each do |quote_type|
       self.send(:define_method, "#{quote_type}".to_sym) do
-        clear_parameters
         @interface.send("add_#{quote_type}_params".to_sym)
-        get
+        find
       end
     end
     
@@ -145,7 +137,7 @@ module YahooStock
     
     # Clear all existing parameters from the current instance.
     def clear_parameters
-      @interface.yahoo_url_parameters.clear
+      @interface.clear_parameters
     end
     
     # Returns an array of all allowed parameters that can be used.
