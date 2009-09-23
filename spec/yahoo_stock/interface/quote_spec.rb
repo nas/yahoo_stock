@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe YahooStock::Interface::Quote::Quote do
   
   before(:each) do
-    @interface = YahooStock::Interface::Quote.new(:stock_symbols => ['MSFT'], :read_parameters => [:last_trade_price_only])
+    @interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym1'], :read_parameters => [:param1])
+    @allowed_parameters = [:param1, :param2, :param3]
   end
   
   describe ".new" do
@@ -26,11 +27,11 @@ describe YahooStock::Interface::Quote::Quote do
     end
     
     it "should raise InterfaceError when read parameters hash is nil" do
-      lambda { YahooStock::Interface::Quote.new(:stock_symbols => 'sym', :read_parameters => nil) }.should raise_error(YahooStock::Interface::Quote::QuoteError,'Dont know what data to get')
+      lambda { YahooStock::Interface::Quote.new(:stock_symbols => 'sym', :read_parameters => nil) }.should raise_error(YahooStock::Interface::Quote::QuoteError,'Read parameters are not provided')
     end
     
     it "should raise InterfaceError when read parameters hash is a zero element array" do
-      lambda { YahooStock::Interface::Quote.new(:stock_symbols => 'sym', :read_parameters => []) }.should raise_error(YahooStock::Interface::Quote::QuoteError,'Dont know what data to get')
+      lambda { YahooStock::Interface::Quote.new(:stock_symbols => 'sym', :read_parameters => []) }.should raise_error(YahooStock::Interface::Quote::QuoteError,'Read parameters are not provided')
     end
     
     it "should assign appropriate values to the stock symbols accessor" do
@@ -43,13 +44,92 @@ describe YahooStock::Interface::Quote::Quote do
       interface.yahoo_url_parameters.should eql(['param1'])
     end
     
+    it "should have the base url" do
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface.base_url = 'http://download.finance.yahoo.com/d/quotes.csv'
+    end
+    
+    it "should add the self as an observer to reset the values if any symbol or parameter is modified" do
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface.count_observers.should eql(1)
+    end
+    
+    it "should not have zero observer" do
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface.count_observers.should_not eql(0)
+    end
+  end
+  
+  describe "scrip_symbols=" do
+    
+    it "should add the new symbol to the existing stock symbol array" do
+      @interface.stock_symbols = 'sym2'
+      @interface.stock_symbols.should include('sym2','sym1')
+    end
+    
+    it "should not add duplicate symbols more than once" do
+      @interface.stock_symbols = 'sym2'
+      @interface.stock_symbols = 'sym2'
+      @interface.stock_symbols.size.should eql(2)
+    end
+    
+    it "should not run observers if symbols havent change" do
+      @interface.stock_symbols = 'sym1'
+      @interface.should_not_receive(:run_observers)
+    end
+    
+    it "should run observers if stock symbols have changed" do
+      @interface.stock_symbols.should eql(['sym1'])
+      @interface.should_receive(:run_observers)
+      @interface.stock_symbols = 'sym2'
+      @interface.stock_symbols.should include('sym2','sym1')
+    end
+  end
+  
+  describe "yahoo_url_parameters=" do
+    before(:each) do
+      @interface.stub!(:allowed_parameters).and_return(@allowed_parameters)
+    end
+    it "should raise error when an invalid parameter is passed" do
+      lambda { 
+        @interface.yahoo_url_parameters = :random_param 
+        }.should raise_error(YahooStock::Interface::Quote::QuoteError, "Interface parameter random_param is not a valid parameter.")
+    end
+    
+    it "should add the new param to the existing params array" do
+      @interface.yahoo_url_parameters = :param2
+      @interface.yahoo_url_parameters.should include(:param1, :param2)
+    end
+    
+    it "should not add duplicate params more than once" do
+      @interface.yahoo_url_parameters = :param1
+      @interface.yahoo_url_parameters = :param1
+      @interface.yahoo_url_parameters.size.should eql(1)
+    end
+    
+    it "should not run observers if parameters havent change" do
+      @interface.yahoo_url_parameters = :param1
+      @interface.should_not_receive(:run_observers)
+    end
+    
+    it "should run observers if stock symbols have changed" do
+      @interface.yahoo_url_parameters.should eql([:param1])
+      @interface.should_receive(:run_observers)
+      @interface.yahoo_url_parameters = :param2
+      @interface.yahoo_url_parameters.should include(:param1, :param2)
+    end
+    
   end
   
   describe "uri" do
+    before(:each) do
+      @interface.stub!(:yahoo_url_parameters).and_return([:param1])
+      @interface.stub!(:parameters).and_return({:param1 => 's', :param2 => 'w', :param3 => 't'})
+    end
     
     it "should raise InterfaceError if the passed parameter is not present in the parameter list" do
-      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param1, :param2])
-      lambda { interface.uri }.should raise_error(YahooStock::Interface::Quote::QuoteError, "The parameters 'param1, param2' are not valid. Please check using YahooStock::Interface::Quote#allowed_parameters or YahooStock::Quote#valid_parameters")
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param4, :param5])
+      lambda { interface.uri }.should raise_error(YahooStock::Interface::Quote::QuoteError, "The parameters 'param4, param5' are not valid. Please check using YahooStock::Interface::Quote#allowed_parameters or YahooStock::Quote#valid_parameters")
     end
     
     it "should not raise any error if parameters passed are correct" do
@@ -71,11 +151,11 @@ describe YahooStock::Interface::Quote::Quote do
     end
     
     it "should create the uri with stock symbol parameter" do
-      @interface.uri.should =~ /s=MSFT/
+      @interface.uri.should =~ /s=sym1/
     end
     
     it "should create the uri with parameter code" do
-      @interface.uri.should =~ /f=l1/
+      @interface.uri.should =~ /f=s/
     end
     
     it "should have an & to join symbols and data parameter" do
@@ -83,13 +163,51 @@ describe YahooStock::Interface::Quote::Quote do
     end
     
     it "should create the uri with 3 symbols" do
-      @interface.add_symbols 'AAP', 'GOOG'
-      @interface.uri.should  =~ /s=MSFT\+AAP\+GOOG/
+      @interface.stub!(:stock_symbols).and_return(['sym1','sym2', 'sym3'])
+      @interface.uri.should  =~ /s=sym1\+sym2\+sym3/
     end
     
     it "should create the uri with 3 parameters" do
-      @interface.add_parameters :change_from_200_day_moving_average, :percent_change_from_200_day_moving_average
-      @interface.uri.should  =~ /f=l1m5m6/
+      @interface.stub!(:yahoo_url_parameters).and_return([:param1,:param2, :param3])
+      @interface.uri.should  =~ /f=swt/
+    end
+    
+  end
+  
+  describe "get" do
+    before(:each) do
+      @response = stub('HTTP Response')
+      @response.stub!(:code).and_return('200')
+      @response.stub!(:body)
+      URI.stub!(:parse)
+      Net::HTTP.stub!(:get_response).and_return(@response)
+      @interface.stub!(:uri)
+    end
+    
+    it "should use uri to get the content" do
+      @interface.should_receive(:uri).at_least(2)
+      @interface.get
+    end
+    
+    it "should get response for the uri" do
+      Net::HTTP.should_receive(:get_response).and_return(@response)
+      @interface.get
+    end
+    
+    it "should parse the uri" do
+      URI.should_receive(:parse)
+      @interface.get
+    end
+    
+    it "should check the response code" do
+      @response.should_receive(:code)
+      @interface.get
+    end
+    
+    it "should get the body of the response if returned code is 200, ie success" do
+      @response.stub!(:code).and_return('200')
+      @response.should_receive(:body)
+      @interface.get
     end
     
   end
@@ -156,9 +274,7 @@ describe YahooStock::Interface::Quote::Quote do
       @interface.stock_symbols.should include('test1', 'test2')
     end
     
-    it "should not add the symbol more than once in the symbol list and silently ignore it" do
-      symbols = ['test']
-      @interface.stub!(:stock_symbols).and_return(symbols)
+    it "should not add the symbol more than once in the symbol list and silently ignore the duplicate ones" do
       @interface.add_symbols('test1', 'test2')
       @interface.stock_symbols.should include('test1', 'test2')
       @interface.stock_symbols.size.should eql(3)
@@ -166,30 +282,6 @@ describe YahooStock::Interface::Quote::Quote do
       @interface.stock_symbols.should include('test1', 'test2')
       @interface.stock_symbols.size.should eql(3)
     end
-  end
-  
-  describe "results" do
-    
-    before(:each) do
-      symbols = ['sym1', 'sym2', 'sym3']
-      @interface.stub!(:stock_symbols).and_return(symbols)
-      params = [:test1, :test2, :test3]
-      @interface.stub!(:yahoo_url_parameters).and_return(params)
-    end
-    
-    it "should get all values" do
-      @interface.should_receive(:get_values).and_return([])
-      @interface.results
-    end
-    
-    it "should have a hash of symbols and each parameter value" do
-      @values = ["23,787,09","43,45,65", "6,56,8"]
-      @interface.stub!(:get_values).and_return(@values)
-      @interface.results.should include({'sym1' => {:test1 => "23", :test2 => "787", :test3 => "09"}})
-      @interface.results.should include({'sym2' => {:test1 => "43", :test2 => "45", :test3 => "65"}})
-      @interface.results.should include({'sym3' => {:test1 => "6", :test2 => "56", :test3 => "8"}})
-    end
-    
   end
    
   describe "allowed_parameters" do
@@ -222,6 +314,11 @@ describe YahooStock::Interface::Quote::Quote do
       @interface.should_receive(:add_parameters).with(:b_key)
       @interface.add_standard_params
     end
+    
+    it "should add grouped parameters" do
+      @interface.should_receive(:add_grouped_parameters)
+      @interface.add_extended_params
+    end
    
   end
   
@@ -237,6 +334,11 @@ describe YahooStock::Interface::Quote::Quote do
       YahooStock::Interface::Quote::EXTENDED_PARAMETERS.stub!(:keys).and_return(keys)
       @interface.should_receive(:add_parameters).with(:a_key)
       @interface.should_receive(:add_parameters).with(:b_key)
+      @interface.add_extended_params
+    end
+    
+    it "should add grouped parameters" do
+      @interface.should_receive(:add_grouped_parameters)
       @interface.add_extended_params
     end
    
@@ -256,41 +358,30 @@ describe YahooStock::Interface::Quote::Quote do
       @interface.should_receive(:add_parameters).with(:b_key)
       @interface.add_realtime_params
     end
+    
+    it "should add grouped parameters" do
+      @interface.should_receive(:add_grouped_parameters)
+      @interface.add_extended_params
+    end
    
   end
   
-  describe "get" do
-    before(:each) do
-      @response = stub('Response')
-      Net::HTTP.stub!(:get_response).and_return(@response)
-      URI.stub!(:parse)
-      @response.stub!(:code).and_return('200')
-      @response.stub!(:body)
+  describe "clear_parameters" do
+    it "should get all yahoo url parameters" do
+      @interface.should_receive(:yahoo_url_parameters).and_return([])
+      @interface.clear_parameters
     end
     
-    it "should find or generate the uri once in the get method and once in the get method of the super class" do
-      @interface.should_receive(:uri).twice
-      @interface.get
+    it "should clear all yahoo url parameters" do
+      param = []
+      @interface.stub!(:yahoo_url_parameters).and_return(param)
+      param.should_receive(:clear)
+      @interface.clear_parameters
     end
     
-    it "should get response for the uri" do
-      Net::HTTP.should_receive(:get_response).and_return(@response)
-      @interface.get
-    end
-    
-    it "should parse the uri" do
-      URI.should_receive(:parse)
-      @interface.get
-    end
-    
-    it "should check the response code" do
-      @response.should_receive(:code)
-      @interface.get
-    end
-    
-    it "should get the body of the response if returned code is 200, ie success" do
-      @response.should_receive(:body)
-      @interface.get
+    it "should run the observers" do
+      @interface.should_receive(:run_observers)
+      @interface.clear_parameters
     end
   end
   
