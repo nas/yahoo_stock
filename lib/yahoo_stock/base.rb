@@ -1,4 +1,4 @@
-# YahooStock::Base class to find and format results.
+# YahooStock::Base class to find and output results.
 module YahooStock
   
   class Base
@@ -14,9 +14,9 @@ module YahooStock
     
     # Method takes one parameter type or a block
     # type uses the existing format classes namespaced in Result::ClassName.output
-    # e.g. * format :to_array
-    #      * format {YourSpecialFormat.method_name}
-    def format(type=nil, &block)
+    # e.g. * results :to_array
+    #      * results {YourSpecialFormat.method_name}
+    def results(type=nil, &block)
       if block_given?
         yield
       else

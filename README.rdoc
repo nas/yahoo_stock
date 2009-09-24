@@ -46,7 +46,7 @@ quote.find
 
 	to return an array instead of a string use
 
-	quote.format :to_array
+	quote.results :to_array
 
 * To find out the stock symbol for a company
   

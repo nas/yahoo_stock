@@ -14,7 +14,7 @@ describe YahooStock::Base do
     end
   end
   
-  describe "format" do
+  describe "results" do
     before(:each) do
       @interface = stub!('Base')
       @base = YahooStock::Base.new(@interface)
@@ -22,18 +22,18 @@ describe YahooStock::Base do
     
     it "should return thr results using find" do
       @base.should_receive(:find)
-      @base.format
+      @base.results 
     end
     
     it "should yield the block if a block is given" do
-      @base.format{"Block to pass, probably, a class with format output method"
-        }.should eql('Block to pass, probably, a class with format output method')
+      @base.results {"Block to pass, probably, a class with result output method"
+        }.should eql('Block to pass, probably, a class with result output method')
     end
     
-    it "should use the ArrayFormat class for results when :to_array is passed to the format param" do
+    it "should use the ArrayFormat class for results when :to_array is passed to the results  param" do
       @base.stub!(:find)
       YahooStock::Result::ArrayFormat.should_receive(:output)
-      @base.format(:to_array)
+      @base.results (:to_array)
     end
    
   end
