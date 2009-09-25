@@ -366,6 +366,25 @@ describe YahooStock::Interface::Quote::Quote do
    
   end
   
+  describe "clear_symbols" do
+    it "should get all stock symbols" do
+      @interface.should_receive(:stock_symbols).and_return([])
+      @interface.clear_symbols
+    end
+
+    it "should clear all stock symbols" do
+      sym = []
+      @interface.stub!(:stock_symbols).and_return(sym)
+      sym.should_receive(:clear)
+      @interface.clear_symbols
+    end
+
+    it "should run the observers" do
+      @interface.should_receive(:run_observers)
+      @interface.clear_symbols
+    end
+  end
+
   describe "clear_parameters" do
     it "should get all yahoo url parameters" do
       @interface.should_receive(:yahoo_url_parameters).and_return([])

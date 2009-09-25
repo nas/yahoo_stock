@@ -255,6 +255,12 @@ module YahooStock
       run_observers
     end
     
+    # Clear all existing symbols from the current instance.
+    def clear_symbols
+      stock_symbols.clear
+      run_observers
+    end
+    
     private
     
     def add_grouped_parameters(parameter_group)
