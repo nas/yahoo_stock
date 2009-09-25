@@ -39,6 +39,7 @@ module YahooStock
       @interface = YahooStock::Interface::ScripSymbol.new(company)
     end
     
+    # TODO : Needs removal
     # This is just a convenience method to print all results on your console screen 
     # and to return nil at the end. It uses find method to print symbols on the screen.
     def self.print_options(*companies)
@@ -49,6 +50,7 @@ module YahooStock
       nil
     end
     
+    # TODO: Needs removeal
     # Another convenience method to store all returned results into a file
     def self.save_options_to_file(file_name, *companies)
       File.open(file_name, 'a') do |f|

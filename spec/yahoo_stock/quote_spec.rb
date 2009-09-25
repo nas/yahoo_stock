@@ -76,11 +76,6 @@ module YahooStock
           @quote.add_symbols('new_symbol')
         end
         
-        it "should add the symbol to existing symbols by calling add symbols on interface for each sybmol" do
-          @interface.should_receive(:add_symbols).exactly(2).times
-          @quote.add_symbols('new_symbol', 'another_symbol')
-        end
-        
       end
       
       describe "remove_symbols" do
@@ -90,24 +85,12 @@ module YahooStock
           @quote.remove_symbols('remove_symbol')
         end
         
-        it "should remove the symbol from existing symbols by calling remove symbols on interface for each symbol" do
-          @interface.should_receive(:remove_symbols).exactly(2).times
-          @quote.remove_symbols('new_symbol', 'another_symbol')
-        end
-        
       end
       
       describe "clear_symbols" do
         
-        it "should get all stock symbols from the interface" do
-          @interface.should_receive(:stock_symbols).and_return([])
-          @quote.clear_symbols
-        end
-        
-        it "should remove the symbol from existing symbols by calling remove symbols on interface for each symbol" do
-          symbols = ['symbol1', 'symbol2']
-          @interface.stub!(:stock_symbols).and_return(symbols)
-          symbols.should_receive(:clear)
+        it "should remove the symbol from existing symbols by clearing symbols from interface" do
+          @interface.should_receive(:clear_symbols)
           @quote.clear_symbols
         end
         
@@ -129,11 +112,6 @@ module YahooStock
           @quote.add_parameters('param1')
         end
         
-        it "should add the parameter to existing parameters by calling add parameters on interface for each parameter" do
-          @interface.should_receive(:add_parameters).exactly(2).times
-          @quote.add_parameters('param1', 'param2')
-        end
-        
       end
       
       describe "remove_parameters" do
@@ -141,11 +119,6 @@ module YahooStock
         it "should remove the parameter from existing parameters by calling remove parameters on interface" do
           @interface.should_receive(:remove_parameters)
           @quote.remove_parameters('remove_parameter')
-        end
-        
-        it "should remove the parameter from existing parameters by calling remove parameters on interface for each parameter" do
-          @interface.should_receive(:remove_parameters).exactly(2).times
-          @quote.remove_parameters('param1', 'param2')
         end
         
       end

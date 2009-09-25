@@ -93,18 +93,18 @@ module YahooStock
     # Adds more stock symbols to the existing instance.
     # One or more stock symbols can be passed as parameter.
     def add_symbols(*symbols)
-      symbols.each { |symbol| @interface.add_symbols(symbol) }
+      @interface.add_symbols(*symbols)
     end
     
     # Removes stock symbols from the existing instance.
     # One of more stock symbols can be passed to remove.
     def remove_symbols(*symbols)
-      symbols.each { |symbol| @interface.remove_symbols(symbol) }
+      @interface.remove_symbols(*symbols)
     end
     
     # Clear all existing stock symbols from the current instance.
     def clear_symbols
-      @interface.stock_symbols.clear
+      @interface.clear_symbols
     end
     
     # Show all stock symbols in the current instance that will be used to get results.
@@ -115,13 +115,13 @@ module YahooStock
     # Adds more parameters for the stock symbols to the existing instance for getting data.
     # One or more parameters can be passed as argument.
     def add_parameters(*parameters)
-      parameters.each { |parameter| @interface.add_parameters(parameter) }
+      @interface.add_parameters(*parameters)
     end
     
     # Removes parameters for the stock symbols to get values for from the existing instance.
     # One of more parameters can be passed to remove.
     def remove_parameters(*parameters)
-      parameters.each { |parameter| @interface.remove_parameters(parameter) }
+      @interface.remove_parameters(*parameters)
     end
     
     # Shows all parameters in the current instance that will be used to get results.
