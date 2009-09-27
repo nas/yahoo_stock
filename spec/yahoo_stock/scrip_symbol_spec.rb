@@ -1,88 +1,33 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe YahooStock::ScripSymbol do
-  
-  describe ".print_options" do
+  describe ".results" do
     before(:each) do
-      @symbol = stub(YahooStock::ScripSymbol)
-      @script_symbol = YahooStock::ScripSymbol.stub!(:new).and_return(@symbol)
+      @company = stub('ScripSymbol')
+      @result = YahooStock::Result.new('cst')
+      YahooStock::ScripSymbol.stub!(:new).and_return(@company)
+      @company.stub!(:results).and_return(@result)
+    end
+    it "should create ScripSymbol instance for each company name" do
+      YahooStock::ScripSymbol.should_receive(:new).with('company1').and_return(@company)
+      YahooStock::ScripSymbol.should_receive(:new).with('company2').and_return(@company)
+      YahooStock::ScripSymbol.results('company1', 'company2')
     end
     
-    it "should find scrip symbol for one company" do
-      @symbol.should_receive(:find).once.and_return([])
-      YahooStock::ScripSymbol.print_options('company1')
+    it "find results for each company" do
+      @company.should_receive(:results).twice.and_return(@result)
+      YahooStock::ScripSymbol.results('company1', 'company2')
     end
     
-    it "should find scrip symbols for two companies" do
-      @symbol.should_receive(:find).twice.and_return([])
-      YahooStock::ScripSymbol.print_options('company1', 'company2')
-    end
-    
-    it "should return nil" do
-      @symbol.should_receive(:find).and_return([])
-      YahooStock::ScripSymbol.print_options('company1').should eql(nil)
-    end
-    
-    it "should print the results for each scrip or company, i.e twice" do
-      scrip = ['name','stock']
-      @symbol.stub!(:find).and_return([scrip])
-      YahooStock::ScripSymbol.should_receive(:p).with(scrip).twice
-      YahooStock::ScripSymbol.print_options('company1','company2')
-    end
-    
-    it "should print the results for each scrip or company, 4times" do
-      scrip = ['name','stock']
-      @symbol.stub!(:find).and_return([scrip,scrip])
-      YahooStock::ScripSymbol.should_receive(:p).with(scrip).exactly(4)
-      YahooStock::ScripSymbol.print_options('company1','company2')
+    it "should concatenate the results of all company names and then initialize the YahooStock::Result object" do
+      company2 = stub('ScripSymbol')
+      @result2 = YahooStock::Result.new('qwe')
+      company2.stub!(:results).and_return(@result2)
+      YahooStock::ScripSymbol.stub!(:new).with('company1').and_return(@company)
+      YahooStock::ScripSymbol.stub!(:new).with('company2').and_return(company2)
+      YahooStock::Result.should_receive(:new).with("cst\nqwe\n")
+      YahooStock::ScripSymbol.results('company1', 'company2')
     end
   end
-  
-  describe ".save_options_to_file" do
-    before(:each) do
-      @symbol = stub(YahooStock::ScripSymbol)
-      @script_symbol = YahooStock::ScripSymbol.stub!(:new).and_return(@symbol)
-      @file = stub(File)
-      @file_name = 'file_name'
-    end
-    
-    it "should create or open a file with file name parameter and appends to it" do
-      File.should_receive(:open).with(@file_name, 'a')
-      YahooStock::ScripSymbol.save_options_to_file('file_name', 'company1')
-    end
-    
-    it "should find scrip symbol for one company" do
-      @symbol.should_receive(:find).once.and_return([])
-      YahooStock::ScripSymbol.save_options_to_file(@file_name,'company1')
-    end
 
-    it "should find scrip symbols for two companies" do
-      @symbol.should_receive(:find).twice.and_return([])
-      YahooStock::ScripSymbol.save_options_to_file(@file_name, 'company1','company2')
-    end
-    
-    it "should have one option for each company in the file" do
-      scrip = ['name','stock']
-      @symbol.stub!(:find).and_return([scrip])
-      YahooStock::ScripSymbol.save_options_to_file(@file_name, 'company1','company2')
-      file_data.should eql(["name, stock\n", "name, stock\n"])
-    end
-    
-    it "should have two option for each company in the file" do
-      scrip = ['name','stock']
-      @symbol.stub!(:find).and_return([scrip, scrip])
-      YahooStock::ScripSymbol.save_options_to_file(@file_name, 'company1','company2')
-      file_data.should eql(["name, stock\n", "name, stock\n", "name, stock\n", "name, stock\n"])
-    end
-    
-    def file_data
-      File.open(@file_name, 'r') { |f| return f.readlines }
-    end
-    
-    after(:each) do
-      File.delete(@file_name) if File.exists? @file_name
-    end
-    
-  end
-  
 end
