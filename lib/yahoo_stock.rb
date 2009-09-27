@@ -10,6 +10,7 @@ require 'yahoo_stock/quote.rb'
 require 'yahoo_stock/interface/quote.rb'
 require 'yahoo_stock/interface/history.rb'
 require 'yahoo_stock/interface/scrip_symbol.rb'
+require 'yahoo_stock/result.rb'
 require 'yahoo_stock/result/array_format.rb'
 
 module YahooStock
