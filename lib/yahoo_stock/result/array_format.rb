@@ -7,11 +7,11 @@ module YahooStock
   #   YahooStock::Result::ArrayFormat.output("data as string")
   # 
   # Mostly will be used as a separate strategy for formatting results
-  module Result
-    class ArrayFormat
+    class Result::ArrayFormat < Result
       
       def initialize(data)
         @data = data
+        super(self)
       end
       
       def output
@@ -21,11 +21,6 @@ module YahooStock
         return new_val
       end
       
-      def self.output(data)
-        format = self.new(data)
-        format.output
-      end
-      
     end
-  end
+  
 end

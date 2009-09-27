@@ -35,22 +35,4 @@ describe YahooStock::Result::ArrayFormat do
     end
   end
   
-  describe ".output" do
-    before(:each) do
-      @data = "asdf\"sdf,as,f\" asf s"
-      @array_format = YahooStock::Result::ArrayFormat.new(@data)
-    end
-    
-    it "should initialize the new array format object" do
-      YahooStock::Result::ArrayFormat.should_receive(:new).with(@data).and_return(@array_format)
-      YahooStock::Result::ArrayFormat.output(@data)
-    end
-    
-    it "should call the output instance methot of the ArrayFormat object" do
-      YahooStock::Result::ArrayFormat.stub!(:new).and_return(@array_format)
-      @array_format.should_receive(:output)
-      YahooStock::Result::ArrayFormat.output(@data)
-    end
-  end
-  
 end
