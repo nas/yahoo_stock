@@ -16,15 +16,17 @@ module YahooStock
     # type uses the existing format classes namespaced in Result::ClassName.output
     # e.g. * results :to_array
     #      * results {YourSpecialFormat.method_name}
+    # to store
     def results(type=nil, &block)
       if block_given?
         yield
       else
-        return find if !type || type.to_s.empty?
+        return YahooStock::Result.new(find) if !type || type.to_s.empty?
         format_type = type.to_s.sub(/^to_/,'').strip
-        return YahooStock::Result.const_get("#{format_type.capitalize}Format").output(find)
+        return YahooStock::Result.const_get("#{format_type.capitalize}Format").new(find)
       end
     end
+    
     
   end
   

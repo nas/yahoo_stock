@@ -20,7 +20,7 @@ describe YahooStock::Base do
       @base = YahooStock::Base.new(@interface)
     end
     
-    it "should return thr results using find" do
+    it "should return the results using find" do
       @base.should_receive(:find)
       @base.results 
     end
@@ -32,8 +32,15 @@ describe YahooStock::Base do
     
     it "should use the ArrayFormat class for results when :to_array is passed to the results  param" do
       @base.stub!(:find)
-      YahooStock::Result::ArrayFormat.should_receive(:output)
-      @base.results (:to_array)
+      YahooStock::Result::ArrayFormat.should_receive(:new)
+      @base.results(:to_array)
+    end
+    
+    it "should create the YahooStock::Result object when no formatting option is provided" do
+      find = stub('find')
+      @base.stub!(:find).and_return(find)
+      YahooStock::Result.should_receive(:new).with(find)
+      @base.results
     end
    
   end
