@@ -129,6 +129,8 @@ module YahooStock
       sort_symbols(@interface.yahoo_url_parameters)
     end
     
+    alias :data_attributes :current_parameters
+    
     # Set current instance to use all parameters to fetch values for current symbols.
     def use_all_parameters
       params = valid_parameters.each {|parameter| add_parameters(parameter)}
