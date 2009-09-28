@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe YahooStock::Base do
+  before(:each) do
+    @interface = stub!('Base')
+    @base = YahooStock::Base.new(@interface)
+  end
   
   describe "find" do
-    before(:each) do
-      @interface = stub!('Base')
-      @base = YahooStock::Base.new(@interface)
-    end
     
     it "should get the values from interface" do
       @interface.should_receive(:values)
@@ -15,10 +15,6 @@ describe YahooStock::Base do
   end
   
   describe "results" do
-    before(:each) do
-      @interface = stub!('Base')
-      @base = YahooStock::Base.new(@interface)
-    end
     
     it "should return the results using find" do
       @base.should_receive(:find)
@@ -43,5 +39,10 @@ describe YahooStock::Base do
       @base.results
     end
    
+  end
+  describe "data_attributes" do
+    it "should raise an error if the data_attributes is called as this is an abstract method" do
+      lambda { @base.data_attributes }.should raise_error(RuntimeError, 'Abstract method called. Use the subclass data_attributes method')
+    end
   end
 end

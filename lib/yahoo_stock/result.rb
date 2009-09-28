@@ -1,5 +1,6 @@
 module YahooStock
   class Result
+
     def initialize(klass)
       @klass = klass
     end
@@ -15,5 +16,6 @@ module YahooStock
         f.write("\n")
       end
     end
+
   end
 end

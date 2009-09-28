@@ -23,10 +23,14 @@ module YahooStock
       else
         return YahooStock::Result.new(find) if !type || type.to_s.empty?
         format_type = type.to_s.sub(/^to_/,'').strip
-        return YahooStock::Result.const_get("#{format_type.capitalize}Format").new(find)
+        return YahooStock::Result.const_get("#{format_type.capitalize}Format").new(find){data_attributes}
       end
     end
     
+    # Abstract method
+    def data_attributes
+      raise 'Abstract method called. Use the subclass data_attributes method'
+    end
     
   end
   
