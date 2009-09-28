@@ -49,11 +49,10 @@ module YahooStock
         cells = row.split(/\<\/td>/)
         row_data = []
         cells.each_with_index do |cell, cell_i|
-          datum = cell.sub('</a>','').gsub(/\<.*\>/,'')
+          datum = cell.sub('</a>','').gsub(/\<.*\>/,'').strip
           row_data << datum if !datum.nil? || datum.empty?
-          row_data.reject!{|rd| rd.empty?}
         end
-        data << row_data.join(', ') if row_data.length > 1 
+        data << row_data.join(',') if row_data.length > 1 
       end
       data.join("\r\n")
     end

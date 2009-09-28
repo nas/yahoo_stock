@@ -65,25 +65,25 @@ describe YahooStock::Interface::ScripSymbol do
     end
     
     it "should return a comma separated string" do
-      @scrip_symbol.values.should eql('Company Name, symbol, price')
+      @scrip_symbol.values.should eql('Company Name,symbol,price')
     end
     
     it "should return a comma separated string with line break chars if more than one row is present" do
       @text += "<tr><td>Company Name</td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
       @scrip_symbol.stub!(:text_range).and_return(@text)
-      @scrip_symbol.values.should eql("Company Name, symbol, price\r\nCompany Name, symbol, price")
+      @scrip_symbol.values.should eql("Company Name,symbol,price\r\nCompany Name,symbol,price")
     end
     
     it "should remove any hyperlinks" do
       @text += "<tr><td><a href='asd'>Company Name</a></td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
       @scrip_symbol.stub!(:text_range).and_return(@text)
-      @scrip_symbol.values.should eql("Company Name, symbol, price\r\nCompany Name, symbol, price")
+      @scrip_symbol.values.should eql("Company Name,symbol,price\r\nCompany Name,symbol,price")
     end
     
-    it "should get rid of any blank values" do
+    it "should not get rid of any blank values" do
        @text += "<tr><td></td><td class ='dd'>symbol</td><td class='ss'>price</td></tr>"
         @scrip_symbol.stub!(:text_range).and_return(@text)
-        @scrip_symbol.values.should eql("Company Name, symbol, price\r\nsymbol, price")
+        @scrip_symbol.values.should eql("Company Name,symbol,price\r\n,symbol,price")
     end
     
   end
