@@ -2,7 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe YahooStock::Interface::ScripSymbol do
   before(:each) do
-    @interface = YahooStock::Interface::ScripSymbol.new('company_name')
+    @interface = YahooStock::Interface::ScripSymbol.new('company name')
+  end
+  
+  describe ".new" do
+    it "should replace any space from company name with +" do
+      @interface.company.should eql('company+name')
+    end
+    
   end
   describe "get" do
     before(:each) do
@@ -42,7 +49,7 @@ describe YahooStock::Interface::ScripSymbol do
   describe "uri" do
     it "should generate full url with all paramenters" do
       @interface.base_url = 'http://download.finance.yaaaaahoo.com/d/quotes.csv'
-      @interface.uri.should eql('http://download.finance.yaaaaahoo.com/d/quotes.csv?s=company_name')
+      @interface.uri.should eql('http://download.finance.yaaaaahoo.com/d/quotes.csv?s=company+name')
     end
   end
   
@@ -86,6 +93,28 @@ describe YahooStock::Interface::ScripSymbol do
         @scrip_symbol.values.should eql("Company Name,symbol,price\r\n,symbol,price")
     end
     
+  end
+  
+  describe "setting company" do
+    it "should replace any space from the company name with +" do
+      @interface.company = 'new company'
+      @interface.company.should eql('new+company')
+    end
+    
+    it "should set changed to true if company has changed" do
+      @interface.should_receive(:changed)
+      @interface.company = 'new company'
+    end
+    
+    it "should set changed to false if company has not changed" do
+      @interface.should_receive(:changed).with(false)
+      @interface.company = 'company name'
+    end
+    
+    it "should notify any observers about the state of the object when company attribute is set" do
+      @interface.should_receive(:notify_observers)
+      @interface.company = 'company name'
+    end
   end
   
 end

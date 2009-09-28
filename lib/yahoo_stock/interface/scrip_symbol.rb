@@ -7,12 +7,14 @@ module YahooStock
 
     class ScripSymbolError < RuntimeError ; end
     
+    attr_reader :company
     # Scrapes the resulting page and gets data in between two points
     def initialize(company)
       @base_url = BASE_URLS[:scrip_symbol]
-      @company = company.gsub(/\s/,'+')
+      @company = remove_any_space(company)
       @before_element = 'yfi_sym_results'
       @after_element = 'yfi_fp_left_bottom'
+      add_observer(self)
     end
     
     # Generate full uri with the help of uri method of the superclass
@@ -31,8 +33,18 @@ module YahooStock
       @values ||= get_values
     end
     
+    def company=(company)
+      old_company = @company
+      @company = remove_any_space(company)
+      old_company != @company ? changed : changed(false)
+      notify_observers
+    end
+    
     private
     
+    def remove_any_space(words)
+      words.gsub(/\s/,'+')
+    end
     # returns only the text among two points
     def text_range
       body = get.gsub!(/\s*/,'')
