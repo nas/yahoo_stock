@@ -35,8 +35,20 @@ module YahooStock
     #     symbol = YahooStock::ScripSymbol.new('company name')
     # 
     #     symbol.find
-    def initialize(company)
-      @interface = YahooStock::Interface::ScripSymbol.new(company)
+    
+    attr_reader :company
+    
+    def initialize(company_name)
+      @company = company_name
+      @interface = YahooStock::Interface::ScripSymbol.new(@company)
+    end
+    
+    def company=(company)
+      @company = @interface.company = company
+    end
+    
+    def data_attributes
+      ['Symbol', 'Name', 'Last Trade', 'Type', 'Industry Category', 'Exchange']
     end
     
     # get stock symbols for multilple companies

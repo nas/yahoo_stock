@@ -29,5 +29,18 @@ describe YahooStock::ScripSymbol do
       YahooStock::ScripSymbol.results('company1', 'company2')
     end
   end
+  
+  describe "data_attributes" do
+    before(:each) do
+      @symbol = YahooStock::ScripSymbol.new('company name')
+    end
+    it "should return an array of data attributes" do
+      @symbol.data_attributes.should be_instance_of(Array)
+    end
+    
+    it "should have following data attributes" do
+      @symbol.data_attributes.should include('Symbol', 'Name', 'Last Trade', 'Type', 'Industry Category', 'Exchange')
+    end
+  end
 
 end
