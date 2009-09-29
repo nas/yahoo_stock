@@ -22,5 +22,35 @@ describe YahooStock::History do
     
   end
   
+  describe "find" do
+    before(:each) do
+      @interface = stub('YahooStock::Interface::History')
+      YahooStock::Interface::History.stub!(:new).and_return(@interface)
+      @interface.stub!(:values)
+      @history = YahooStock::History.new(:stock_symbol => 'a symbol', :start_date => Date.today-3, :end_date => Date.today-1)
+    end
+    
+    it "should find values using interface" do
+      @interface.should_receive(:values).and_return('data')
+      @history.find
+    end
+    
+    it "should remove the first line from the data as it is just the headings" do
+      data = 'data returned'
+      @interface.stub!(:values).and_return(data)
+      data.should_receive(:sub).with(/Date.*\s/,'')
+      @history.find
+    end
+  end
+  
+  describe "data_attributes" do
+    before(:each) do
+      @history = YahooStock::History.new(:stock_symbol => 'a symbol', :start_date => Date.today-3, :end_date => Date.today-1)
+      @data = "Date, price, etc \n23, 34, 44\n"
+    end
+    
+    it "should find data"    
+    it "should return data attributes" 
+  end
   
 end

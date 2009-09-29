@@ -10,22 +10,15 @@ module YahooStock
       @interface = YahooStock::Interface::History.new(options)
     end
     
-    # NEED TO MOVE THIS METHOD TO HASH_FORMAT CLASS
-    # Return an array of hashes with latest date first
-    # Each array element contains a hash of date, volume traded, opening, closing, high and low prices
-    def results
-      values = @interface.get.split(/\n/)
-      headers, daily_data = values.partition{|h| h==values[0]}
-      headings = headers.first.split(',')
-      data = []
-      daily_data.each do |datum|
-        daily_values = {}
-        datum.split(',').each_with_index do |item, i|
-          daily_values[headings[i]] = item
-        end
-        data << daily_values
-      end
-      data
+    def find
+      @find_values = super()
+      @find_values.sub(/Date.*\s/,'')
+    end
+    
+    def data_attributes
+      find unless @find_values
+      data_attributes = /Date.*\s/.match(@find_values)
+      @data_attributes = data_attributes[0].sub(/\s*$/,'').split(',')
     end
     
   end
