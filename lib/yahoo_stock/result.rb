@@ -1,13 +1,13 @@
 module YahooStock
   class Result
 
-    def initialize(klass)
-      @klass = klass
+    def initialize(context)
+      @context = context
     end
     
     def output
-      return @klass if @klass.is_a?(String)
-      @klass.output
+      return @context if @context.is_a?(String)
+      @context.output
     end
     
     def store(filename)
