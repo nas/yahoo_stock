@@ -202,9 +202,8 @@ module YahooStock
           @quote.realtime
         end
         
-        it "should find the results" do
-          @quote.should_receive(:find)
-          @quote.realtime
+        it "should return self" do
+          @quote.realtime.should eql(@quote)
         end
 
       end
@@ -221,9 +220,8 @@ module YahooStock
           @quote.standard
         end
         
-        it "should find the results" do
-          @quote.should_receive(:find)
-          @quote.standard
+        it "should return self" do
+          @quote.standard.should eql(@quote)
         end
 
       end
@@ -240,9 +238,8 @@ module YahooStock
           @quote.extended
         end
         
-        it "should find the results" do
-          @quote.should_receive(:find)
-          @quote.extended
+        it "should return self" do
+          @quote.extended.should eql(@quote)
         end
 
       end

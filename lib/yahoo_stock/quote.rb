@@ -86,7 +86,7 @@ module YahooStock
     %w{realtime extended standard}.each do |quote_type|
       self.send(:define_method, "#{quote_type}".to_sym) do
         @interface.send("add_#{quote_type}_params".to_sym)
-        find
+        return self
       end
     end
     
