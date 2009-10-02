@@ -12,13 +12,20 @@ module YahooStock
     
     def find
       @find_values = super()
-      @find_values.sub(/Date.*\s/,'')
+      @find_values.sub(/Date.*\s/,'') if @find_values
+    end
+    
+    def values_with_header
+      @interface.values
     end
     
     def data_attributes
-      find unless @find_values
-      data_attributes = /Date.*\s/.match(@find_values)
-      @data_attributes = data_attributes[0].sub(/\s*$/,'').split(',')
+      return unless values_with_header
+      data_attributes = /Date.*\s/.match(values_with_header)
+      unless data_attributes.nil?
+        @data_attributes = data_attributes[0].sub(/\s*$/,'').split(',')
+        @data_attributes.map &:strip
+      end
     end
     
   end

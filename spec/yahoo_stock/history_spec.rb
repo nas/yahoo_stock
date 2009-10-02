@@ -46,11 +46,30 @@ describe YahooStock::History do
   describe "data_attributes" do
     before(:each) do
       @history = YahooStock::History.new(:stock_symbol => 'a symbol', :start_date => Date.today-3, :end_date => Date.today-1)
-      @data = "Date, price, etc \n23, 34, 44\n"
+      @data = "Date, price, etc \n23, 34, 44\n\n222,234,2"
+      @history.stub!(:values_with_header).and_return(@data)
     end
     
-    it "should find data"    
-    it "should return data attributes" 
+    it "should return nil if history values are not present" do
+      @history.stub!(:values_with_header)
+      @history.data_attributes.should eql(nil)
+    end
+    
+    it "should return only header values if history values are present" do
+      @history.data_attributes.should eql(["Date","price","etc"])
+    end
+    
+  end
+  
+  describe "values_with_header" do
+    
+    it "should get values from the interface" do
+      @interface = stub('YahooStock::Interface::History')
+      YahooStock::Interface::History.stub!(:new).and_return(@interface)
+      @history = YahooStock::History.new(:stock_symbol => 'a symbol', :start_date => Date.today-3, :end_date => Date.today-1)
+      @interface.should_receive(:values)
+      @history.values_with_header
+    end
   end
   
 end
