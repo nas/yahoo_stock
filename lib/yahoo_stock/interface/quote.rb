@@ -107,7 +107,7 @@ module YahooStock
       :day_value_change_real_time => 'w4',
     } unless defined?(REALTIME_PARAMETERS)
     
-    attr_reader :stock_symbols, :yahoo_url_parameters
+    attr_reader :stock_symbols
     
     # The stock_params_hash parameter expects a hash with two key value pairs
     # 
@@ -139,6 +139,11 @@ module YahooStock
       @stock_symbols ||= []
       @stock_symbols << stock_symbol unless @stock_symbols.include?(stock_symbol)
       run_observers if symbols_on_read != @stock_symbols
+    end
+    
+    def yahoo_url_parameters
+      return if !@yahoo_url_parameters || @yahoo_url_parameters.empty?
+      @yahoo_url_parameters.map(&:id2name).sort.map(&:to_sym)
     end
     
     def yahoo_url_parameters=(yahoo_url_parameter)

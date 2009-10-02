@@ -4,10 +4,22 @@ describe YahooStock::Interface::Quote::Quote do
   
   before(:each) do
     @interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym1'], :read_parameters => [:param1])
-    @allowed_parameters = [:param1, :param2, :param3]
+    @allowed_parameters = [:param1, :param2, :param3, :zxy, :xyz, :abc, :def]
   end
   
   describe ".new" do
+    
+    it "should add new parameters after current parametr and sort the url parameters" do
+      @interface.stub!(:allowed_parameters).and_return(@allowed_parameters)
+      @interface.add_parameters :zxy, :xyz
+      @interface.yahoo_url_parameters.should eql([:param1, :xyz, :zxy])
+    end
+    
+    it "should sort the url parameters" do
+      @interface.stub!(:allowed_parameters).and_return(@allowed_parameters)
+      @interface.add_parameters :def, :abc
+      @interface.yahoo_url_parameters.should eql([:abc, :def, :param1])
+    end
     
     it "should raise InterfaceError when stock params hash is nil" do
       lambda { YahooStock::Interface::Quote.new(nil)
@@ -35,27 +47,27 @@ describe YahooStock::Interface::Quote::Quote do
     end
     
     it "should assign appropriate values to the stock symbols accessor" do
-      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param1])
       interface.stock_symbols.should eql(['sym'])
     end
     
     it "should assign appropriate values to the yahoo url parameters accessor" do
-      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
-      interface.yahoo_url_parameters.should eql(['param1'])
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param1])
+      interface.yahoo_url_parameters.should eql([:param1])
     end
     
     it "should have the base url" do
-      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param1])
       interface.base_url = 'http://download.finance.yahoo.com/d/quotes.csv'
     end
     
     it "should add the self as an observer to reset the values if any symbol or parameter is modified" do
-      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param1])
       interface.count_observers.should eql(1)
     end
     
     it "should not have zero observer" do
-      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => ['param1'])
+      interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym'], :read_parameters => [:param1])
       interface.count_observers.should_not eql(0)
     end
   end
