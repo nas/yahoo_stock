@@ -228,7 +228,7 @@ describe YahooStock::Interface::Quote::Quote do
     
     it "should remove the parameters if they are present" do
       params = [:test1, :test2, :test3]
-      @interface.stub!(:yahoo_url_parameters).and_return(params)
+      @interface = YahooStock::Interface::Quote.new(:stock_symbols => ['sym1'], :read_parameters => params)
       @interface.remove_parameters(:test1, :test2)
       @interface.yahoo_url_parameters.should eql([:test3])
     end
@@ -398,16 +398,11 @@ describe YahooStock::Interface::Quote::Quote do
   end
 
   describe "clear_parameters" do
-    it "should get all yahoo url parameters" do
-      @interface.should_receive(:yahoo_url_parameters).and_return([])
-      @interface.clear_parameters
-    end
     
     it "should clear all yahoo url parameters" do
-      param = []
-      @interface.stub!(:yahoo_url_parameters).and_return(param)
-      param.should_receive(:clear)
+      @interface.yahoo_url_parameters.should_not eql([])
       @interface.clear_parameters
+      @interface.yahoo_url_parameters.should eql([])
     end
     
     it "should run the observers" do

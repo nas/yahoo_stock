@@ -142,7 +142,7 @@ module YahooStock
     end
     
     def yahoo_url_parameters
-      return if !@yahoo_url_parameters || @yahoo_url_parameters.empty?
+      return [] if !@yahoo_url_parameters || @yahoo_url_parameters.empty?
       @yahoo_url_parameters.map(&:id2name).sort.map(&:to_sym)
     end
     
@@ -229,7 +229,7 @@ module YahooStock
         if yahoo_url_parameters.length == 1
           raise QuoteError, "Parameter #{parameter} is the last parameter. Please add another parameter before removing this."     
         end
-        yahoo_url_parameters.reject!{|parameter_key| parameter_key == parameter}
+        @yahoo_url_parameters.reject!{|parameter_key| parameter_key == parameter}
         run_observers
       end
     end
@@ -256,7 +256,7 @@ module YahooStock
     
     # Clear all existing parameters from the current instance.
     def clear_parameters
-      yahoo_url_parameters.clear
+      @yahoo_url_parameters.clear
       run_observers
     end
     

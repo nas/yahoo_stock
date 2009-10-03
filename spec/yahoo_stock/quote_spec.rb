@@ -147,12 +147,6 @@ module YahooStock
           @quote.current_parameters
         end
         
-        it "should sort all received current parameters" do
-          @interface.stub!(:yahoo_url_parameters)
-          @quote.should_receive(:sort_symbols)
-          @quote.current_parameters
-        end
-        
       end
       
       describe "use_all_parameters" do
@@ -184,8 +178,21 @@ module YahooStock
       describe "clear_parameters" do
         
         it "should get all values for parameters from the interface" do
+          @quote.stub!(:current_parameters)
           @interface.should_receive(:clear_parameters)
           @quote.clear_parameters
+        end
+        
+        it "should get current parameters after clearing them" do
+          @interface.stub!(:clear_parameters)
+          @quote.should_receive(:current_parameters)
+          @quote.clear_parameters
+        end
+        
+        it "clear all parameters and show an empty array when there are no yahoo url parameters" do
+          @interface.stub!(:clear_parameters)
+          @interface.stub!(:yahoo_url_parameters).and_return([])
+          @quote.clear_parameters.should eql([])
         end
         
       end

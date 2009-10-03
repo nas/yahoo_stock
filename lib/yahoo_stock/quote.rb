@@ -126,7 +126,7 @@ module YahooStock
     
     # Shows all parameters in the current instance that will be used to get results.
     def current_parameters
-      sort_symbols(@interface.yahoo_url_parameters)
+      @interface.yahoo_url_parameters
     end
     
     alias :data_attributes :current_parameters
@@ -140,6 +140,7 @@ module YahooStock
     # Clear all existing parameters from the current instance.
     def clear_parameters
       @interface.clear_parameters
+      current_parameters
     end
     
     # Returns an array of all allowed parameters that can be used.
