@@ -7,7 +7,7 @@
 Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc, virtually any thing that yahoo finance provides.
 
 If you don't know the stock / scrip symbol of the company then you can find that out by using the YahooStock::ScripSymbol class. The methods are mentioned in the Usage section below. For instance, YHOO for yahoo, GOOG for google, etc. 
-The kind of parameters can be passed can be found after initializing the 
+The kind of parameters to be passed can be found after initializing the 
 YahooStock::Quote object and passing valid_parameters message, example is given below in the USAGE section.
 
 == USAGE:
@@ -42,19 +42,52 @@ quote.remove_symbols('MSFT', 'AAPL')
 
 * To find data for all stocks, this will give a string containing all values
 
-quote.find
+quote.results
 
-	to return an array instead of a string use
+	to return an array instead of a string use:
 
-	quote.results :to_array
+	quote.results(:to_array).output
+	
+	to return a hash, use:
+	
+	quote.results(:to_hash).output
+	
+	to store results in a file, use:
+	
+	quote.results.store('filename')
 
 * To find out the stock symbol for a company
   
-YahooStock::ScripSymbol.print_options('Yahoo', 'Company1', 'Company3')
+symbol = YahooStock::ScripSymbol.new('Yahoo')
 
-* To store the output in a file
+* To find all symbols for that company, this will give a string containing all values
 
-YahooStock::ScripSymbol.save_options_to_file('path/to/filename','Yahoo', 'Company1', 'Company3')
+symbol.results
+
+	to return an array instead of a string use:
+
+	symbol.results(:to_array).output
+	
+	to return a hash, use:
+	
+	symbol.results(:to_hash).output
+	
+	to store results in a file, use:
+	
+	symbol.results.store('filename')
+
+* To find symbols for multiple companies
+
+symbols = YahooStock::ScripSymbol.results('Yahoo', 'Company1', 'Company3')
+
+* to get the result in a string
+
+symbols.output
+
+* to store output in a file
+
+symbols.store('filename')
+
 
 == INSTALL:
 
