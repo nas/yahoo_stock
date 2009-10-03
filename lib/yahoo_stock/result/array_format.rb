@@ -4,7 +4,7 @@ module YahooStock
   #   Parse results to show in an array form
   # 
   # == USAGE
-  #   YahooStock::Result::ArrayFormat.output("data as string")
+  #   YahooStock::Result::ArrayFormat.new("data as commma separated values").output
   # 
   # Mostly will be used as a separate strategy for formatting results
     class Result::ArrayFormat < Result
@@ -15,6 +15,7 @@ module YahooStock
       end
       
       def output
+        # Some inconsistency happens hence remove quotes
         val = @data.gsub(/\"/,'').split(/\r\n|\n/)
         new_val = []
         val.each {|v| new_val << v.split(',')}

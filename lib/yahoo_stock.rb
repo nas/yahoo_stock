@@ -12,6 +12,7 @@ require 'yahoo_stock/interface/history.rb'
 require 'yahoo_stock/interface/scrip_symbol.rb'
 require 'yahoo_stock/result.rb'
 require 'yahoo_stock/result/array_format.rb'
+require 'yahoo_stock/result/hash_format.rb'
 
 module YahooStock
   VERSION = '1.0.1'
