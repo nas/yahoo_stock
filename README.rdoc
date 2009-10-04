@@ -1,6 +1,6 @@
 = yahoo_stock
 
-* http://github.com/nas/yahoo_stock
+	* http://github.com/nas/yahoo_stock
 
 == DESCRIPTION:
 
@@ -13,11 +13,11 @@ YahooStock::Quote object and passing valid_parameters message, example is given 
 
 == INSTALL:
 
-gem sources -a http://gems.github.com
+	gem sources -a http://gems.github.com
 
-gem sources -a http://gemcutter.org
+	gem sources -a http://gemcutter.org
 
-sudo gem install nas-yahoo_stock
+	sudo gem install nas-yahoo_stock
 
 
 == USAGE:
