@@ -108,6 +108,8 @@ symbols.store('filename')
 
 gem sources -a http://gems.github.com
 
+gem sources -a http://gemcutter.org
+
 sudo gem install nas-yahoo_stock
 
 == TESTS:
