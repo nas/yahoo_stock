@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nasir Jamal"]
-  s.date = %q{2009-10-03}
+  s.date = %q{2009-10-04}
   s.description = %q{Yahoo Stock is a Ruby library for extracting information about stocks from yahoo finance}
   s.email = %q{nas35_in@yahoo.com}
   s.extra_rdoc_files = ["README.rdoc"]

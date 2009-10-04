@@ -37,3 +37,25 @@
 
 * 1 addition:
   * adds feature to retreive historical stock data
+
+=== 1.0.2 2009-10-04
+Major changes in the public API. Check the README.rdoc file and individual classes for more information
+
+* 8 addition:
+  * adds YahooStock::Interface::History
+  * adds YahooStock::Interface::Quote
+  * adds YahooStock::Interface::ScripSymbol
+  * adds YahooStock::Result as a superclass for all formatter classes
+  * adds array format, Result::ArrayFormat, to generate results as an array
+  * adds hash format, Result::ArrayFormat, to generate results as key value pairs
+  * adds base class as parent for public facing classes
+  * adds observers to check when it is required to send request to yahoo again to get fresh data
+
+* 7 changes:
+  * changes YahooStock::Interface to be the main interface class. Other interface classes will inherit from this
+  * changes YahooStock::ScripSymbol to use YahooStock::Interface::ScripSymbol
+  * removes all history interface logic from YahooStock::History and uses YahooStock::Interface::History
+  * changes YahooStock::Quote, YahooStock::History, YahooStock::ScripSymbol to extend from YahooStock::Base
+  * sorts url parameters before sending request to yahoo
+  * YahooInterface::Quote#realtime, extended, and standard methods should return self to allow calling different format output method calls
+  * do not discard any empty values when finding scrip symbol options for a company as this interferes with different format options
