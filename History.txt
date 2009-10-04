@@ -59,3 +59,9 @@ Major changes in the public API. Check the README.rdoc file and individual class
   * sorts url parameters before sending request to yahoo
   * YahooInterface::Quote#realtime, extended, and standard methods should return self to allow calling different format output method calls
   * do not discard any empty values when finding scrip symbol options for a company as this interferes with different format options
+
+=== 1.0.3 2009-10-04
+
+* 2 changes:
+  * changes README file to add reference for gemcutter
+  * changes gemspec to use nas-yahoo_stock

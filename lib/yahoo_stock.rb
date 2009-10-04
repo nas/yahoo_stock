@@ -15,5 +15,5 @@ require 'yahoo_stock/result/array_format.rb'
 require 'yahoo_stock/result/hash_format.rb'
 
 module YahooStock
-  VERSION = '1.0.2'
+  VERSION = '1.0.3'
 end
