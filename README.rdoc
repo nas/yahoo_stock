@@ -10,6 +10,16 @@ If you don't know the stock / scrip symbol of the company then you can find that
 The kind of parameters to be passed can be found after initializing the 
 YahooStock::Quote object and passing valid_parameters message, example is given below in the USAGE section.
 
+
+== INSTALL:
+
+gem sources -a http://gems.github.com
+
+gem sources -a http://gemcutter.org
+
+sudo gem install nas-yahoo_stock
+
+
 == USAGE:
 
 require 'rubygems'
@@ -104,13 +114,6 @@ symbols.store('filename')
 	
 	history.results.store('filename')
 
-== INSTALL:
-
-gem sources -a http://gems.github.com
-
-gem sources -a http://gemcutter.org
-
-sudo gem install nas-yahoo_stock
 
 == TESTS:
 
