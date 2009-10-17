@@ -40,18 +40,6 @@ describe YahooStock::Result::HashFormat do
     end
   end
   
-  def output
-    data = []
-    @data.each do |datum|
-      row_values = {}
-      datum.each_with_index do |item, i|
-        row_values[keys[i]] = item
-      end
-      data << row_values
-    end
-    data
-  end
-  
   describe "keys" do
     it "should replace white space characters to underscore in the keys" do
       hash_format = YahooStock::Result::HashFormat.new(@data){['ke y 1', 'k e y 2']}
