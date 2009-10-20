@@ -5,19 +5,19 @@ Feature: Find Script Symbols
 	Scenario: Find Scrip Symbols
 		Given I know the name of the company "Yahoo"
 		When I try to find the scrip symbols for "Yahoo"
-		Then I should be able to get results as a comma separated values in a string
+		Then I should be able to get scrip symbol results as a comma separated values in a string
 		
 	Scenario: Get symbol results in array format
-		Given I have the results for the symbol "yhoo"
-		When I want to get the results in array format
-		Then I should get an array of values
+		Given I have the scrip symbol results for the symbol "yhoo"
+		When I want to get the scrip symbol results in array format
+		Then I should get an array of values for scrip symbol
 
 	Scenario: Get symbol results in hash format
-		Given I have the results for the symbol "yhoo"
-		When I want to get the results in hash format
-		Then I should get an array of hash key values
+		Given I have the scrip symbol results for the symbol "yhoo"
+		When I want to get the scrip symbol results in hash format
+		Then I should get an array of hash key values for scrip symbol
 
 	Scenario: Get symbol results in xml format
-		Given I have the results for the symbol "yhoo"
-		When I want to get the results in xml format
-		Then I should be able to get result as xml
+		Given I have the scrip symbol results for the symbol "yhoo"
+		When I want to get the scrip symbol results in xml format
+		Then I should be able to get scrip symbol result as xml
