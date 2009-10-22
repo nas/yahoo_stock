@@ -1,6 +1,7 @@
-module YahooStock
-  require 'rubygems'
-  require 'builder'  
+require 'rubygems'
+require 'builder'
+
+module YahooStock  
   
   class Result::XmlFormat < Result
     def initialize(data, &block)
@@ -14,8 +15,8 @@ module YahooStock
       builder.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
       builder.items do |items|
         @data.each do |data|
-          builder.item(:symbol => 'something') do |b|
-          data.each_pair do |key, value|
+          builder.item do |b|
+            data.each_pair do |key, value|
               next if key.nil?
               eval("b.#{key}(value)")
             end

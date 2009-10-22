@@ -13,8 +13,6 @@ YahooStock::Quote object and passing valid_parameters message, example is given 
 
 == INSTALL:
 
-	gem sources -a http://gems.github.com
-
 	gem sources -a http://gemcutter.org
 
 	sudo gem install nas-yahoo_stock
