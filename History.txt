@@ -65,3 +65,12 @@ Major changes in the public API. Check the README.rdoc file and individual class
 * 2 changes:
   * changes README file to add reference for gemcutter
   * changes gemspec to use nas-yahoo_stock
+
+=== 1.0.4 2009-10-23
+
+* 2 addition:
+	* adds support for xml format
+	* adds cucumber features
+	
+* 1 changes:
+  * changes README file to remove git source add for github

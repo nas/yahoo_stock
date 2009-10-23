@@ -12,6 +12,7 @@ lib/yahoo_stock/quote.rb
 lib/yahoo_stock/result.rb
 lib/yahoo_stock/result/array_format.rb
 lib/yahoo_stock/result/hash_format.rb
+lib/yahoo_stock/result/xml_format.rb
 lib/yahoo_stock/scrip_symbol.rb
 lib/yahoo_stock.rb
 spec/spec_helper.rb
@@ -25,5 +26,12 @@ spec/yahoo_stock/history_spec.rb
 spec/yahoo_stock/result_spec.rb
 spec/yahoo_stock/result/array_format_spec.rb
 spec/yahoo_stock/result/hash_format_spec.rb
+spec/yahoo_stock/result/xml_format_spec.rb
 spec/yahoo_stock/scrip_symbol_spec.rb
+features/history.feature
+features/quotes.feature
+features/script_symbol.feature
+features/step_definitions/history_steps.rb
+features/step_definitions/quotes_steps.rb
+features/step_definitions/script_symbol_steps.rb
 
