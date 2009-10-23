@@ -1,7 +1,14 @@
 require 'rubygems'
 require 'builder'
 
-module YahooStock  
+module YahooStock
+  # == DESCRIPTION:
+  # Convert results to xml
+  # 
+  # == USAGE
+  # YahooStock::Result::XmlFormat.new("data as string"){[:keys => :values]}.output
+  #
+  # Mostly will be used as a separate strategy for formatting results  to xml
   
   class Result::XmlFormat < Result
     def initialize(data, &block)
