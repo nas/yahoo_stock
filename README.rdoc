@@ -8,7 +8,7 @@ Provides an interface to yahoo finance to get stock related data. For instance, 
 
 If you don't know the stock / scrip symbol of the company then you can find that out by using the YahooStock::ScripSymbol class. The methods are mentioned in the Usage section below. For instance, YHOO for yahoo, GOOG for google, etc. 
 The kind of parameters to be passed can be found after initializing the 
-YahooStock::Quote object and passing valid_parameters message, example is given below in the USAGE section.
+YahooStock::Quote object and passing valid_parameters message to the quote object, example is given below in the USAGE section.
 
 
 == INSTALL:
@@ -60,6 +60,10 @@ quote.results
 	
 	quote.results(:to_hash).output
 	
+	to return xml, use:
+	
+	quote.results(:to_xml).output
+	
 	to store results in a file, use:
 	
 	quote.results.store('filename')
@@ -79,6 +83,10 @@ symbol.results
 	to return a hash, use:
 	
 	symbol.results(:to_hash).output
+	
+	to return xml, use:
+	
+	quote.results(:to_xml).output
 	
 	to store results in a file, use:
 	
@@ -105,6 +113,10 @@ symbols.store('filename')
 	history.results(:to_array).output
 	
 	to return a hash, use:
+	
+	to return xml, use:
+	
+	quote.results(:to_xml).output
 	
 	history.results(:to_hash).output
 	
