@@ -126,6 +126,9 @@ symbols.store('filename')
 	
 	history.results.store('filename')
 
+==Docs
+
+http://rdoc.info/projects/nas/yahoo_stock
 
 == TESTS:
 
