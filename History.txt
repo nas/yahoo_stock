@@ -74,3 +74,8 @@ Major changes in the public API. Check the README.rdoc file and individual class
 	
 * 1 changes:
   * changes README file to remove git source add for github
+
+=== 1.0.5 2010-05-07
+
+* 1 change:
+  * made the case statement in YahooStock::Interface::History on line 86 ruby 1.9.1 compatible
