@@ -36,7 +36,7 @@
 === 1.0.1 2009-09-10
 
 * 1 addition:
-  * adds feature to retreive historical stock data
+  * adds feature to retrieve historical stock data
 
 === 1.0.2 2009-10-04
 Major changes in the public API. Check the README.rdoc file and individual classes for more information

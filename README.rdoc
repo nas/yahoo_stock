@@ -108,7 +108,7 @@ symbols.store('filename')
 
 * To find historical data for a stock
 
-  history = YahooStock::History.new(:stock_symbols => 'yhoo', :start_date => Date.today-20, end_date => Date.today -2)
+  history = YahooStock::History.new(:stock_symbols => 'yhoo', :start_date => Date.today-20, :end_date => Date.today -2)
   
   	to return an array instead of a string use:
 
