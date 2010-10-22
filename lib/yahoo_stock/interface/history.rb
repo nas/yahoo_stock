@@ -28,7 +28,7 @@ module YahooStock
     # :stock_symbol => 'goog', :start_date => Date.today-30,
     # :end_date => Date.today-10, :interval => :weekly
     #
-    # The interval option accepts :daily, :monthly and :weekly values
+    # The interval option accepts :daily, :monthly, :weekly and :dividend values
     #
     # The interval key is optional, if not used then by default uses :daily
     #
@@ -83,9 +83,10 @@ module YahooStock
     # Generate full uri with the help of uri method of the superclass
     def uri
       frequency = case interval
-                    when :daily   then 'd'
-                    when :weekly  then 'w'
-                    when :monthly then 'm'
+                    when :daily     then 'd'
+                    when :weekly    then 'w'
+                    when :monthly   then 'm'
+                    when :dividend  then 'v'
                   end
       @uri_parameters = {:a => sprintf("%02d", start_date.month-1), :b => start_date.day, 
                          :c => start_date.year, :d => sprintf("%02d", end_date.month-1),
@@ -109,7 +110,7 @@ module YahooStock
     private
     
     def validate_interval_values(interval_value=interval)
-      valid_values = [:daily, :weekly, :monthly]
+      valid_values = [:daily, :weekly, :monthly, :dividend]
       unless valid_values.include?(interval_value)
         raise HistoryError, "Allowed values for interval are #{valid_values.join(', ')}"
       end
