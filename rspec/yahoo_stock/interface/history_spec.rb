@@ -97,12 +97,12 @@ describe YahooStock::Interface::History do
                                                   :end_date => Date.today-1, :boom => 1) }.should raise_error(YahooStock::Interface::History::HistoryError, "An invalid key 'boom' is passed in the parameters. Allowed keys are stock_symbol, start_date, end_date, interval")
     end
     
-    it "should raise error when interval is neither :daily, :weekly or :monthly" do
+    it "should raise error when interval is neither :daily, :weekly, :monthly or :dividend" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
                                                   :start_date => Date.today-7, 
                                                   :end_date => Date.today-1,
                                                   :interval => :yearly)
-                                        }.should raise_error(YahooStock::Interface::History::HistoryError, "Allowed values for interval are daily, weekly, monthly")
+                                        }.should raise_error(YahooStock::Interface::History::HistoryError, "Allowed values for interval are daily, weekly, monthly, dividend")
       
     end
     
