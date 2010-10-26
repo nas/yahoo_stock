@@ -6,8 +6,8 @@
 
 Provides an interface to yahoo finance to get stock related data. For instance, latest trade related data, volume, 50 day moving average, market cap, etc, virtually any thing that yahoo finance provides.
 
-If you don't know the stock / scrip symbol of the company then you can find that out by using the YahooStock::ScripSymbol class. The methods are mentioned in the Usage section below. For instance, YHOO for yahoo, GOOG for google, etc. 
-The kind of parameters to be passed can be found after initializing the 
+If you don't know the stock / scrip symbol of the company then you can find that out by using the YahooStock::ScripSymbol class. The methods are mentioned in the Usage section below. For instance, YHOO for yahoo, GOOG for google, etc.
+The kind of parameters to be passed can be found after initializing the
 YahooStock::Quote object and passing valid_parameters message to the quote object, example is given below in the USAGE section.
 
 For details : http://nasir.wordpress.com/2009/10/28/ruby-gem-for-finance-data
@@ -22,108 +22,82 @@ For details : http://nasir.wordpress.com/2009/10/28/ruby-gem-for-finance-data
 
 == USAGE:
 
-require 'rubygems'
+	require 'rubygems'
+	require 'yahoo_stock'
 
-require 'yahoo_stock'
+* Initialize quote object:
 
-* Initialize quote object
+	quote = YahooStock::Quote.new(:stock_symbols => ['YHOO', 'GOOG'])
 
-quote = YahooStock::Quote.new(:stock_symbols => ['YHOO', 'GOOG'])
+* To view the valid parameters that can be passed:
 
-* To view the valid parameters that can be passed
+	quote.valid_parameters
 
-quote.valid_parameters
+* To view the current parameters used:
 
-* To view the current parameters used
+	quote.current_parameters
 
-quote.current_parameters
+* To view the current stock symbols used:
 
-* To view the current stock symbols used
+	quote.current_symbols
 
-quote.current_symbols
+* To add more stocks to the list:
 
-* To add more stocks to the list
+	quote.add_symbols('MSFT', 'AAPL')
 
-quote.add_symbols('MSFT', 'AAPL')
+* To remove stocks from list:
 
-* To remove stocks from list
+	quote.remove_symbols('MSFT', 'AAPL')
 
-quote.remove_symbols('MSFT', 'AAPL')
+* To find data for all stocks, this will give a string containing all values:
 
-* To find data for all stocks, this will give a string containing all values
+	quote.results.output
 
-quote.results
-
-	to return an array instead of a string use:
+* To return an array instead of a string use:
 
 	quote.results(:to_array).output
-	
-	to return a hash, use:
-	
+
+* To return a hash, use:
+
 	quote.results(:to_hash).output
-	
-	to return xml, use:
-	
+
+* To return xml, use:
+
 	quote.results(:to_xml).output
-	
-	to store results in a file, use:
-	
+
+* to store results in a file, use:
+
 	quote.results.store('filename')
 
-* To find out the stock symbol for a company
-  
-symbol = YahooStock::ScripSymbol.new('Yahoo')
+* To find out the stock symbol for a company:
 
-* To find all symbols for that company, this will give a string containing all values
+	symbol = YahooStock::ScripSymbol.new('Yahoo')
 
-symbol.results
+* To find all symbols for that company, this will give a string containing all values:
 
-	to return an array instead of a string use:
+	symbol.results.output
+
+* Similarly to YahooStock::Quote, results can be converted to an array, a hash, xml, or stored in a file:
 
 	symbol.results(:to_array).output
-	
-	to return a hash, use:
-	
 	symbol.results(:to_hash).output
-	
-	to return xml, use:
-	
-	quote.results(:to_xml).output
-	
-	to store results in a file, use:
-	
+	symbol.results(:to_xml).output
 	symbol.results.store('filename')
 
-* To find symbols for multiple companies
+* To find symbols for multiple companies:
 
-symbols = YahooStock::ScripSymbol.results('Yahoo', 'Company1', 'Company3')
+	symbols = YahooStock::ScripSymbol.results('Yahoo', 'Company1', 'Company3')
 
-* to get the result in a string
+* To find historical data for a stock:
 
-symbols.output
+	history = YahooStock::History.new(:stock_symbols => 'yhoo', :start_date => Date.today-20, :end_date => Date.today -2)
 
-* to store output in a file
+* As with regular quotes and symbol lookups, the results can be returned in various formats:
 
-symbols.store('filename')
-
-* To find historical data for a stock
-
-  history = YahooStock::History.new(:stock_symbols => 'yhoo', :start_date => Date.today-20, :end_date => Date.today -2)
-  
-  	to return an array instead of a string use:
-
+	history.results.output
 	history.results(:to_array).output
-	
-	to return a hash, use:
-	
-	to return xml, use:
-	
-	quote.results(:to_xml).output
-	
 	history.results(:to_hash).output
-	
-	to store results in a file, use:
-	
+	history.results(:to_xml).output
 	history.results.store('filename')
 
 ==Docs
