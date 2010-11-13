@@ -132,9 +132,11 @@ http://rdoc.info/projects/nas/yahoo_stock
 
 == TESTS:
 
-Tests are written using Rspec 1.2.2
+To run all tests 'rspec spec' from the root directory. It requires rspec >= 2.1.0
 
-To run all tests 'rake spec' from the root directory
+To run cucumber features "rake cucumber". It requires cucumber >= 0.9.4
+
+Cucumber Test html output is logged in log/features.html
 
 == LICENSE:
 
