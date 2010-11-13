@@ -79,3 +79,12 @@ Major changes in the public API. Check the README.rdoc file and individual class
 
 * 1 change:
   * made the case statement in YahooStock::Interface::History on line 86 ruby 1.9.1 compatible
+
+=== 1.0.6 2010-11-13
+
+* 2 addition:
+  * adds dividend query option by Ryan Sandridge
+  * adds cucumber rake task
+
+* 1 changes:
+  * Make sure all tests are run with rspec 2.1.0
