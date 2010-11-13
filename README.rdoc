@@ -112,6 +112,11 @@ To run cucumber features "rake cucumber". It requires cucumber >= 0.9.4
 
 Cucumber Test html output is logged in log/features.html
 
+==Thanks
+
+* Thanks to {Ryan Sandridge}[http://github.com/dissolved] for adding the dividend query option.
+
+
 == LICENSE:
 
 (The MIT License)
