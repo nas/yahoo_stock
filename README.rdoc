@@ -90,7 +90,7 @@ For details : http://nasir.wordpress.com/2009/10/28/ruby-gem-for-finance-data
 
 * To find historical data for a stock:
 
-	history = YahooStock::History.new(:stock_symbol => 'yhoo', :start_date => Date.today-20, :end_date => Date.today -2)
+	history = YahooStock::History.new(:stock_symbol => 'yhoo', :start_date => Date.today-20, :end_date => Date.today-2)
 
 * As with regular quotes and symbol lookups, the results can be returned in various formats:
 

@@ -88,3 +88,7 @@ Major changes in the public API. Check the README.rdoc file and individual class
 
 * 1 changes:
   * Make sure all tests are run with rspec 2.1.0
+
+=== 1.0.7 2010-11-14
+
+* Some refactoring after the addition of dividend option to the history

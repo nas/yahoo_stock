@@ -84,33 +84,33 @@ describe YahooStock::Interface::History do
       
     end
     
-    it "should by default set interval to daily if no value provided for it" do
+    it "should by default set type to daily if no value provided for it" do
       @history = YahooStock::Interface::History.new(:stock_symbol => 'd', 
                                                     :start_date => Date.today-7, 
                                                     :end_date => Date.today-1)
-      @history.interval.should eql(:daily)
+      @history.type.should eql(:daily)
     end
     
     it "should raise invalid keys error when an invalid key is passed in the parameter" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
                                                   :start_date => Date.today-7, 
-                                                  :end_date => Date.today-1, :boom => 1) }.should raise_error(YahooStock::Interface::History::HistoryError, "An invalid key 'boom' is passed in the parameters. Allowed keys are stock_symbol, start_date, end_date, interval")
+                                                  :end_date => Date.today-1, :boom => 1) }.should raise_error(YahooStock::Interface::History::HistoryError, "An invalid key 'boom' is passed in the parameters. Allowed keys are stock_symbol, start_date, end_date, type")
     end
     
-    it "should raise error when interval is neither :daily, :weekly, :monthly or :dividend" do
+    it "should raise error when type is neither :daily, :weekly, :monthly or :dividend" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
                                                   :start_date => Date.today-7, 
                                                   :end_date => Date.today-1,
-                                                  :interval => :yearly)
-                                        }.should raise_error(YahooStock::Interface::History::HistoryError, "Allowed values for interval are daily, weekly, monthly, dividend")
+                                                  :type => :yearly)
+                                        }.should raise_error(YahooStock::Interface::History::HistoryError, "Allowed values for type are daily, weekly, monthly, dividend")
       
     end
     
-    it "should not raise error when interval is :daily" do
+    it "should not raise error when type is :daily" do
       lambda { YahooStock::Interface::History.new(:stock_symbol => 'd', 
                                                   :start_date => Date.today-7, 
                                                   :end_date => Date.today-1,
-                                                  :interval => :daily)
+                                                  :type => :daily)
                                         }.should_not raise_error
       
     end
@@ -170,17 +170,17 @@ describe YahooStock::Interface::History do
       @history.end_date.should eql(e_date)
     end
     
-    it "should raise error when settin interval other than :daily, :monthly or :weekly" do
-      lambda { @history.interval = :yearly }.should raise_error(YahooStock::Interface::History::HistoryError)
+    it "should raise error when settin type other than :daily, :monthly or :weekly" do
+      lambda { @history.type = :yearly }.should raise_error(YahooStock::Interface::History::HistoryError)
     end
     
-    it "should set the interval" do
-      @history.interval = :daily
-      @history.interval.should eql(:daily)
+    it "should set the type" do
+      @history.type = :daily
+      @history.type.should eql(:daily)
     end
     
-    it "should set the interval default to daily if not set" do
-      @history.interval.should eql(:daily)
+    it "should set the type default to daily if not set" do
+      @history.type.should eql(:daily)
     end
   end
   
@@ -191,8 +191,8 @@ describe YahooStock::Interface::History do
                                                     :end_date => Date.today-1)
     end
     
-    it "should get the interval to generate url" do
-      @history.should_receive(:interval)
+    it "should get the type to generate url" do
+      @history.should_receive(:type)
       @history.uri
     end
     
@@ -251,7 +251,7 @@ describe YahooStock::Interface::History do
       @history.uri.should =~ /c=#{@history.end_date.year}/
     end
     
-    it "should have parameter 'g' with interval" do
+    it "should have parameter 'g' with type" do
       @history.uri.should =~ /g=d/
     end
     

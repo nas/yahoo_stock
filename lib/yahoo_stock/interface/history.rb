@@ -21,16 +21,16 @@ module YahooStock
 
     class HistoryError < RuntimeError ; end
     
-    attr_reader :stock_symbol, :start_date, :end_date, :interval
+    attr_reader :stock_symbol, :start_date, :end_date, :type
     
     # The options parameter expects a hash with 4 key value pairs
     #
     # :stock_symbol => 'goog', :start_date => Date.today-30,
-    # :end_date => Date.today-10, :interval => :weekly
+    # :end_date => Date.today-10, :type => :weekly
     #
-    # The interval option accepts :daily, :monthly, :weekly and :dividend values
+    # The type option accepts :daily, :monthly, :weekly and :dividend values
     #
-    # The interval key is optional, if not used then by default uses :daily
+    # The type key is optional, if not used then by default uses :daily
     #
     # and provides daily history for the specified date range
     #
@@ -41,9 +41,9 @@ module YahooStock
       @stock_symbol = options[:stock_symbol]
       @start_date   = options[:start_date]
       @end_date     = options[:end_date]
-      @interval     = options[:interval].nil? ? :daily : options[:interval].to_sym
+      @type     = options[:type].nil? ? :daily : options[:type].to_sym
       
-      validate_interval_values(options[:interval]) if options[:interval]
+      validate_type_values(options[:type]) if options[:type]
       validate_stock_symbol(options)
       validate_start_date(options)
       validate_end_date(options)
@@ -74,24 +74,24 @@ module YahooStock
       @end_date = end_date
     end
     
-    # Set interval to specify whether daily, weekly or monthly histroy required
-    def interval=(interval)
-      validate_interval_values(interval)
-      @interval = interval
+    # Set type to specify whether daily, weekly, monthly or dividend history required
+    def type=(type)
+      validate_type_values(type)
+      @type = type
     end
     
     # Generate full uri with the help of uri method of the superclass
     def uri
-      frequency = case interval
-                    when :daily     then 'd'
-                    when :weekly    then 'w'
-                    when :monthly   then 'm'
-                    when :dividend  then 'v'
-                  end
+      history_type = case type
+                       when :daily     then 'd'
+                       when :weekly    then 'w'
+                       when :monthly   then 'm'
+                       when :dividend  then 'v'
+                     end
       @uri_parameters = {:a => sprintf("%02d", start_date.month-1), :b => start_date.day, 
                          :c => start_date.year, :d => sprintf("%02d", end_date.month-1),
                          :e => end_date.day, :f => end_date.year, :s => stock_symbol,
-                         :g => frequency, :ignore => '.csv'}
+                         :g => history_type, :ignore => '.csv'}
       super()  
     end
 
@@ -109,10 +109,10 @@ module YahooStock
     
     private
     
-    def validate_interval_values(interval_value=interval)
+    def validate_type_values(type_value=type)
       valid_values = [:daily, :weekly, :monthly, :dividend]
-      unless valid_values.include?(interval_value)
-        raise HistoryError, "Allowed values for interval are #{valid_values.join(', ')}"
+      unless valid_values.include?(type_value)
+        raise HistoryError, "Allowed values for type are #{valid_values.join(', ')}"
       end
     end
     
@@ -174,7 +174,7 @@ module YahooStock
     end
     
     def validate_keys(options)
-      valid_keys   = [:stock_symbol, :start_date, :end_date, :interval]
+      valid_keys   = [:stock_symbol, :start_date, :end_date, :type]
       invalid_keys = []
       options.keys.each{|key| invalid_keys << key unless valid_keys.include?(key) }
       unless invalid_keys.length.zero?
