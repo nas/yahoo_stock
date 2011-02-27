@@ -100,6 +100,13 @@ For details : http://nasir.wordpress.com/2009/10/28/ruby-gem-for-finance-data
 	history.results(:to_xml).output
 	history.results.store('filename')
 
+* History results include 7 values for each day, i.e. date itself, Open, High, Low, Close, Volume and Adj.
+
+* To get comma separated values with line breaks including header use:
+
+  history.values_with_header
+  (writing this to a file will give a CSV)
+
 ==Docs
 
 http://rdoc.info/projects/nas/yahoo_stock
