@@ -15,11 +15,7 @@ module YahooStock
       end
       
       def output
-        # Some inconsistency happens hence remove quotes
-        val = @data.gsub(/\"/,'').split(/\r\n|\n/)
-        new_val = []
-        val.each {|v| new_val << v.split(',')}
-        return new_val
+        CSV.parse @data
       end
       
     end

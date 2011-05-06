@@ -2,6 +2,7 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require 'date'
+require 'csv'
 require 'yahoo_stock/base.rb'
 require 'yahoo_stock/interface.rb'
 require 'yahoo_stock/history.rb'
