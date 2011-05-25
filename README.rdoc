@@ -122,6 +122,7 @@ Cucumber Test html output is logged in log/features.html
 ==Thanks
 
 * Thanks to {Ryan Sandridge}[http://github.com/dissolved] for adding the dividend query option.
+* Thanks to {Justin Campbell} [https://github.com/JustinCampbell] for refactoring CSV parsing.
 
 
 == LICENSE:

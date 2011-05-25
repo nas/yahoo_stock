@@ -92,3 +92,7 @@ Major changes in the public API. Check the README.rdoc file and individual class
 === 1.0.7 2010-11-14
 
 * Some refactoring after the addition of dividend option to the history
+
+=== 1.0.8 2011-05-25
+
+* Parse csv data correctly using CSV gem instead to reinventing the wheel
