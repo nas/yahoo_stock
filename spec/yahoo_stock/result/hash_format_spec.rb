@@ -38,6 +38,15 @@ describe YahooStock::Result::HashFormat do
                                      {:key1 => 'da',:key2 => 'ta'}
                                     ])
     end
+    
+    it "should properly parse data with commas" do
+      data = "da,\"t,a\"\nda,\"t,a\"\nda,\"t,a\""
+      hash_format = YahooStock::Result::HashFormat.new(data){['key1', 'key2']}
+      hash_format.output.should eql([{:key1 => 'da',:key2 => 't,a'},
+                                     {:key1 => 'da',:key2 => 't,a'},
+                                     {:key1 => 'da',:key2 => 't,a'}
+                                    ])
+    end
   end
   
   describe "keys" do
