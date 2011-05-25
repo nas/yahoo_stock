@@ -31,7 +31,7 @@ describe YahooStock::Result::HashFormat do
     end
     
     it "should have the data as an array of hashes with the same keys key1 and key2" do
-      data = "da,ta\nda,ta\r\nda,ta"
+      data = "da,ta\nda,ta\nda,ta"
       hash_format = YahooStock::Result::HashFormat.new(data){['key1', 'key2']}
       hash_format.output.should eql([{:key1 => 'da',:key2 => 'ta'},
                                      {:key1 => 'da',:key2 => 'ta'},
