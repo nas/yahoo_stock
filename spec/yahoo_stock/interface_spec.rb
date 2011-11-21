@@ -24,6 +24,14 @@ describe YahooStock::Interface do
       @interface.uri.should =~ /f=toom/
       @interface.uri.should =~ /k=zoom/
     end
+
+    it "should encode carrot (^) symbols for market indices" do
+      @interface.uri_parameters = {:s => '^boom', :f => 'toom', :k => 'zoom'}
+      @interface.uri.should =~ /http:\/\/download.finance.yaaaaahoo.com\/d\/quotes.csv?/
+      @interface.uri.should =~ /s=%5Eboom/
+      @interface.uri.should =~ /f=toom/
+      @interface.uri.should =~ /k=zoom/
+    end
   end
   
   describe "get" do
