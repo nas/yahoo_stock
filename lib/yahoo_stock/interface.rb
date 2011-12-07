@@ -37,7 +37,7 @@ module YahooStock
       return @base_url if @uri_parameters.nil? || @uri_parameters.empty?
       params_with_values = []
       @uri_parameters.each {|k,v| params_with_values << "#{k}=#{v}"}
-      @base_url+'?'+params_with_values.join('&')
+      URI.encode(@base_url+'?'+params_with_values.join('&'))
     end
     
     # Get result string
