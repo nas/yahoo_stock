@@ -35,7 +35,7 @@ module YahooStock
       :ask => 'a',
       :average_daily_volume => 'a2',
       :bid => 'b',
-      :bid_size => 'b4'
+      :bid_size => 'b6'
     } unless defined?(STD_PARAMETERS)
 
     EXTENDED_PARAMETERS = {
