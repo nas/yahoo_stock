@@ -143,7 +143,7 @@ module YahooStock
       if s_date >= Date.today
         raise HistoryError, "Start date must be in the past"
       end
-      if e_date >= Date.today
+      if e_date > Date.today
         raise HistoryError, "End date must be in the past"
       end
       if e_date < s_date
